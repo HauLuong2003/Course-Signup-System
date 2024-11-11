@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "CrsH1UaS9FJt7qt2bax0kTPC9naLgBlQJxwVFf+rAG8=",
+  "Source": "Course-Signup-System",
+  "BasePath": "_content/Course-Signup-System",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Course-Signup-System\\wwwroot",
+      "Source": "Course-Signup-System",
+      "ContentRoot": "D:\\Project_C#\\Course-Signup-System\\Course-Signup-System\\wwwroot\\",
+      "BasePath": "_content/Course-Signup-System",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}

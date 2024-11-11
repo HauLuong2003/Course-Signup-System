@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Course-Signup-System.props" />
+</Project>
