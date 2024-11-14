@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Course_Signup_System.Entities
@@ -7,7 +8,7 @@ namespace Course_Signup_System.Entities
     {
         [Key]
         [StringLength(11)]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = null!;
         [StringLength(50)]
         public string FristName { get; set; } = null!; // Ten 
 
@@ -23,7 +24,7 @@ namespace Course_Signup_System.Entities
         public string Email { get; set; } = null!;
 
         [StringLength(10)]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = null!;
 
         [StringLength(255)]
         public string? Address { get; set; }
@@ -37,8 +38,13 @@ namespace Course_Signup_System.Entities
         [StringLength(255)]
         public string? Avatar { private get; set; }
 
+        public DateTime? CreateAt { get; set; }
+
+        public DateTime? UpdateAt { get; set; }
+
         public int RoleId { get; set; }
         [ForeignKey("RoleId")]
-        public Role Role { get; set; }
+        public Role Role { get; set; } = null!;
+
     }
 }

@@ -64,3 +64,4 @@ D:\Project_C#\Course-Signup-System\Course-Signup-System\obj\Debug\net6.0\refint\
 D:\Project_C#\Course-Signup-System\Course-Signup-System\obj\Debug\net6.0\Course-Signup-System.pdb
 D:\Project_C#\Course-Signup-System\Course-Signup-System\obj\Debug\net6.0\Course-Signup-System.genruntimeconfig.cache
 D:\Project_C#\Course-Signup-System\Course-Signup-System\obj\Debug\net6.0\ref\Course-Signup-System.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\obj\Debug\net6.0\Course-Signup-System.sourcelink.json

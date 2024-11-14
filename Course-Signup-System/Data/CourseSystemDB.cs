@@ -8,21 +8,46 @@ namespace Course_Signup_System.Data
         public CourseSystemDB(DbContextOptions<CourseSystemDB> options) : base(options) 
         {
         }
-        public DbSet<User> Users {  get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Department> Departments { get; set; }
-        public DbSet<ClassOf> TrainingCourses { get; set; }
-        public DbSet<Class> Classes { get; set; }
-        public DbSet<Subject> Subjects { get; set; }
-        public DbSet<Faculty> Faculties { get; set; }
-        public DbSet<StudentClass> StudentClasses { get; set; }
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Role> Roles { get; set; } = null!;
+        public DbSet<Teacher> Teachers { get; set; } = null!;
+        public DbSet<Student> Students { get; set; } = null!;
+        public DbSet<Department> Departments { get; set; } = null!;
+        public DbSet<ClassOf> TrainingCourses { get; set; } = null!;
+        public DbSet<Class> Classes { get; set; } = null!;
+        public DbSet<Subject> Subjects { get; set; } = null!;
+        public DbSet<Faculty> Faculties { get; set; } = null!;
+        public DbSet<StudentClass> StudentClasses { get; set; } = null!;
+        public DbSet<GradeType> GradeTypes {  get; set; } = null!;
+        public DbSet<SubjectClass> SubjectClasses { get; set; } = null!;
+        public DbSet<SubjectGradeType> SubjectGradeTypes { get; set; } = null!;
+        public DbSet<TeachSchedule> TeachSchedules { get; set; } = null!;
+        public DbSet<SchoolHolidaySchedule> SchoolHolidaySchedules { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Teacher>().ToTable("Teachers");
             modelBuilder.Entity<Student>().ToTable("Students");
-          
+            modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(u=> u.PhoneNumber).IsUnique();
+            modelBuilder.Entity<Teacher>().HasIndex(u=>u.IdentityCard ).IsUnique();
+
+            modelBuilder.Entity<TeachSchedule>()
+                     .Property(t => t.StudyTime)
+                     .HasConversion(
+                     v => v.ToString(),  // Convert TimeOnly to string
+                     v => TimeOnly.Parse(v));  // Convert string back to TimeOnly
+            modelBuilder.Entity<SubjectClass>()
+                     .HasOne(sc => sc.Subject) // SubjectClass has one Subject
+                    .WithMany()  // Assuming that the relationship is one-to-many
+                    .HasForeignKey(sc => sc.SubjectId)
+                    .OnDelete(DeleteBehavior.NoAction);  // Disable cascade delete for this relationship
+            modelBuilder.Entity<TeachSchedule>()
+                    .HasOne(ts => ts.Subject) // SubjectClass has one Subject
+                   .WithMany()  // Assuming that the relationship is one-to-many
+                   .HasForeignKey(ts => ts.SubjectId)
+                   .OnDelete(DeleteBehavior.NoAction);  // Disable cascade delete for this relationship
         }
+
     }
 }

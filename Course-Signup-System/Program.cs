@@ -1,6 +1,7 @@
 using Course_Signup_System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json.Serialization;
 
 namespace Course_Signup_System
 {
@@ -20,6 +21,11 @@ namespace Course_Signup_System
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default")?? throw new InvalidOperationException("connection string not fouind"));
              });
+            builder.Services.AddControllers()
+           .AddJsonOptions(options =>
+           {
+               options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+           });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

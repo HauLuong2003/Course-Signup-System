@@ -6,7 +6,7 @@ namespace Course_Signup_System.Entities
     public class Class
     {
         [Key, StringLength(20)]
-        public int ClassId { get; set; }
+        public string ClassId { get; set; } = null!;
 
         [StringLength(100)]
         public string ClassName { get; set; } = null!;
@@ -15,23 +15,27 @@ namespace Course_Signup_System.Entities
 
         public double Tuition { get; set; } //học phi
 
-        public double NumberStudent { get; set; }
+        public int NumberStudent { get; set; }
+
+        public int MaxNumberStudent { get; set; }
 
         [StringLength(255)]
-        public string Description { get; set; }
+        public string? Description { get; set; } = null!;
 
         [StringLength(255)]
-        public string Avatar {  get; set; }
+        public string? Avatar {  get; set; }=null!;
 
-        public string ClassOfId { get; set; }
+        public string ClassOfId { get; set; } = null!;
         [ForeignKey("ClassOfId")]
-        public ClassOf ClassOf { get; set; }
+        public ClassOf ClassOf { get; set; } = null!;
 
-        public string FacultyId { get; set; }
+        public string FacultyId { get; set; } = null!;
         [ForeignKey("FacultyId")]
-        public Faculty Faculty { get; set; }
+        public Faculty Faculty { get; set; } = null!;
 
-        public ICollection<StudentClass> StudentClasses {  get; set; }
-                
+        public ICollection<StudentClass> StudentClasses {  get; set; } = null!;
+        public ICollection<TeachSchedule> TeachSchedules { set; get; } = null!;                                                                 
+        public ICollection<SubjectClass> SubjectClasses { get; set; } = null!;
+
     }
 }

@@ -10,6 +10,12 @@ namespace Course_Signup_System.Entities
         public int GradeTypeId { get; set; }
 
         [StringLength(150)]
-        public string GradeTypeName { get; set; }
+        public string GradeTypeName { get; set; } = null!;
+
+        public int Coefficient { get; set; } //hệ số
+
+        public ICollection<Grade> Grade { get; set; } = null!;
+
+        public ICollection<SubjectGradeType> SubjectGradeType { get; set; } = new List<SubjectGradeType>();
     }
 }

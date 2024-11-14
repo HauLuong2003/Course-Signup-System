@@ -3,17 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Course_Signup_System.Entities
 {
-    public class Grade // thêm điểm
+    public class SubjectGradeType // diểm môn khôi
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]   
         [Key]
-        public int GradeId {  get; set; }
+        public int Id { get; set; }
 
-        public double Score { get; set; }
+        public int GradeColumn { get; set; } // số cột điểm
 
-        public string UserId { get; set; } = null!;
-        [ForeignKey("UserId")]
-        public Student Student { get; set; } = null!;
+        public int MandatoryColumnGrade { get; set; }// số cột điểm bắt buộc
+
+        public string ClassOfId { get; set; } = null!;
+        [ForeignKey("ClassOfId")]
+        public ClassOf ClassOf { get; set; } = null!;
 
         public string SubjectId { get; set; } = null!;
         [ForeignKey("SubjectId")]

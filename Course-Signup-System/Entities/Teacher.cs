@@ -8,12 +8,13 @@ namespace Course_Signup_System.Entities
     {
         
         [StringLength(255)]
-        public string MainTeachingSubject { get; set; }
+        public string MainTeachingSubject { get; set; } = null!;
         [StringLength(255)]
-        public string PartTimeSubject { get;set; }
+        public string PartTimeSubject { get;set; } = null!;
         [StringLength(255)]
-        public string TaxCode { get; set; }
+        public string TaxCode { get; set; } = null!;
         [StringLength(12)]
-        public string IdentityCard { get; set; }
+        public string IdentityCard { get; set; } = null!;
+        public ICollection<TeachSchedule> TeachSchedules { get; set; } = new List<TeachSchedule>();
     }
 }
