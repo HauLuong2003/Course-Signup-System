@@ -15,19 +15,8 @@ namespace Course_Signup_System.Entities
         [StringLength(50)]
         public string LastName { get; set; } = null!; // Ho
 
-        public DateTime BirthDay { get; set; }
-
-        [StringLength(1)]
-        public char Sex { get; set; }
-
         [StringLength(255)]
         public string Email { get; set; } = null!;
-
-        [StringLength(10)]
-        public string PhoneNumber { get; set; } = null!;
-
-        [StringLength(255)]
-        public string? Address { get; set; }
       
         [StringLength(255)]
         public string PasswordHash { get; set; } = null!;

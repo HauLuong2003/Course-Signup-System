@@ -9,6 +9,8 @@ namespace Course_Signup_System.Entities
         [Key]
         public int Id {  get; set; }
 
+        public bool IsClose { get; set; } = false;
+        
         public string SubjectId { get; set; } = null!;
         [ForeignKey("SubjectId")]
         public Subject Subject { get; set; } = null!;

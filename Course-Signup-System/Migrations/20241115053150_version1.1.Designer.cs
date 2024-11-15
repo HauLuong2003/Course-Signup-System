@@ -4,6 +4,7 @@ using Course_Signup_System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Course_Signup_System.Migrations
 {
     [DbContext(typeof(CourseSystemDB))]
-    partial class CourseSystemDBModelSnapshot : ModelSnapshot
+    [Migration("20241115053150_version1.1")]
+    partial class version11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,14 +235,9 @@ namespace Course_Signup_System.Migrations
                     b.Property<double>("Tuition")
                         .HasColumnType("float");
 
-                    b.Property<int>("TuitionTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("PayTuitionId");
 
                     b.HasIndex("StudentClassId");
-
-                    b.HasIndex("TuitionTypeId");
 
                     b.ToTable("PayTuitions");
                 });
@@ -304,11 +301,11 @@ namespace Course_Signup_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("StudentClassId1")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -317,6 +314,8 @@ namespace Course_Signup_System.Migrations
                     b.HasKey("StudentClassId");
 
                     b.HasIndex("ClassId");
+
+                    b.HasIndex("StudentClassId1");
 
                     b.HasIndex("UserId");
 
@@ -461,23 +460,6 @@ namespace Course_Signup_System.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("TeachSchedules");
-                });
-
-            modelBuilder.Entity("Course_Signup_System.Entities.TuitionType", b =>
-                {
-                    b.Property<int>("TuitionTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TuitionTypeId"), 1L, 1);
-
-                    b.Property<string>("TuitionName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TuitionTypeId");
-
-                    b.ToTable("TuitionTypes");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.User", b =>
@@ -652,20 +634,12 @@ namespace Course_Signup_System.Migrations
             modelBuilder.Entity("Course_Signup_System.Entities.PayTuition", b =>
                 {
                     b.HasOne("Course_Signup_System.Entities.StudentClass", "StudentClass")
-                        .WithMany("PayTuitions")
+                        .WithMany()
                         .HasForeignKey("StudentClassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Course_Signup_System.Entities.TuitionType", "TuitionType")
-                        .WithMany("PayTuitions")
-                        .HasForeignKey("TuitionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("StudentClass");
-
-                    b.Navigation("TuitionType");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.StudentClass", b =>
@@ -675,6 +649,10 @@ namespace Course_Signup_System.Migrations
                         .HasForeignKey("ClassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Course_Signup_System.Entities.StudentClass", null)
+                        .WithMany("StudentClasses")
+                        .HasForeignKey("StudentClassId1");
 
                     b.HasOne("Course_Signup_System.Entities.Student", "Student")
                         .WithMany("StudentClasses")
@@ -863,7 +841,7 @@ namespace Course_Signup_System.Migrations
 
             modelBuilder.Entity("Course_Signup_System.Entities.StudentClass", b =>
                 {
-                    b.Navigation("PayTuitions");
+                    b.Navigation("StudentClasses");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.Subject", b =>
@@ -873,11 +851,6 @@ namespace Course_Signup_System.Migrations
                     b.Navigation("SubjectGradeTypes");
 
                     b.Navigation("TeachSchedules");
-                });
-
-            modelBuilder.Entity("Course_Signup_System.Entities.TuitionType", b =>
-                {
-                    b.Navigation("PayTuitions");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.Student", b =>

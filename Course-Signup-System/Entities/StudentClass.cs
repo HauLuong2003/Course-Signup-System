@@ -3,22 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Course_Signup_System.Entities
 {
-    public class StudentClass
+    public class StudentClass// đăng kí 
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity),  Key]
-        public int StudentClassId {  get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
+        public int StudentClassId { get; set; }
 
-        public double Tuition { get; set; } // học phí
+        public bool Status { get; set; } = false;
 
-        public double Discount { get; set; }// giảm giá
-
-        public double Surcharge { set; get; }// phí phụ thu
-
-        public double EffectiveChargeRate =>(Tuition-(Tuition* Discount) /100)+ Surcharge;
-
-        public bool Status { get; set; }
-
-        public string? Note { get; set; } = null!;
         public string UserId { get; set; } = null!;
         [ForeignKey("UserId")]
         public Student Student { get; set; } = null!;
@@ -26,5 +17,9 @@ namespace Course_Signup_System.Entities
         public string ClassId { get; set; } = null!;
         [ForeignKey("ClassId")]
         public Class Class { get; set; } = null!;
+
+        public DateTime CreateAt { get; set; }
+        public ICollection<PayTuition> PayTuitions { get; set; } = new List<PayTuition>();
+
     }
 }

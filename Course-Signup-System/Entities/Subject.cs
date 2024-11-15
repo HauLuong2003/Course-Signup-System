@@ -19,9 +19,9 @@ namespace Course_Signup_System.Entities
         [ForeignKey("FacultyId")]
         public Faculty Faculty { get; set; } = null!;
 
-        public ICollection<SubjectClass> SubjectClasses { get; set; } = null!;
-        public ICollection<TeachSchedule> TeachSchedules { set; get; } = null!;
-        public ICollection<SubjectGradeType> SubjectGradeTypes { get; set;} = null!;
+        public ICollection<SubjectClass> SubjectClasses { get; set; } = new List<SubjectClass>();
+        public ICollection<SubjectGradeType> SubjectGradeTypes { get; set;} = new List<SubjectGradeType>();
+        public ICollection<TeachSchedule> TeachSchedules { get; set; } = new List<TeachSchedule>();
 
     }
 }

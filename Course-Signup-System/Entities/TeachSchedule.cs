@@ -26,6 +26,7 @@ namespace Course_Signup_System.Entities
         [ForeignKey("ClassId")]
         public Class Class { get; set; } = null!;
 
+      
         public string SubjectId { get; set; } = null!;
         [ForeignKey("SubjectId")]
         public Subject Subject { get; set; } = null!;

@@ -8,7 +8,17 @@ namespace Course_Signup_System.Entities
 
         [StringLength(50)]
         public string? Parents { get; set; } = null!;
-        
+
+        public DateTime BirthDay { get; set; }
+
+        [StringLength(1)]
+        public char Sex { get; set; }
+
+        [StringLength(10)]
+        public string PhoneNumber { get; set; } = null!;
+
+        [StringLength(255)]
+        public string? Address { get; set; }
         public ICollection<StudentClass> StudentClasses { get; set; } = null!;
     }
 }

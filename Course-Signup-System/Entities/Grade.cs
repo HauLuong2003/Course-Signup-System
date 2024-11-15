@@ -9,8 +9,6 @@ namespace Course_Signup_System.Entities
         [Key]
         public int GradeId {  get; set; }
 
-        public double Score { get; set; }
-
         public string UserId { get; set; } = null!;
         [ForeignKey("UserId")]
         public Student Student { get; set; } = null!;
@@ -22,5 +20,7 @@ namespace Course_Signup_System.Entities
         public int GradeTypeId { get; set; }
         [ForeignKey("GradeTypeId")]
         public GradeType GradeType { get; set; } = null!;
+
+        public ICollection<GradeColumn> GradeColumns { get; set; } = new List<GradeColumn>();
     }
 }

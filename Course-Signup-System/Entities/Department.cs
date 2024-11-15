@@ -20,8 +20,8 @@ namespace Course_Signup_System.Entities
 
         public DateTime UpdateAt { get; set; }
 
-        public ICollection<Subject> Subjects { get; set; } = null!;
+        public ICollection<Subject> Subjects { get; set; } = new List<Subject>();
 
-        public ICollection<SubjectClass> SubjectClasses { get; set; } = null!;
+        public ICollection<SubjectClass> SubjectClasses { get; set; } = new List<SubjectClass>();
     }
 }
