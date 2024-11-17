@@ -10,7 +10,6 @@ namespace Course_Signup_System.Entities
         public int Id { get; set; }
 
         public TimeOnly StudyTime { get; set; }
-
         
         public DayOfWeek StudyDay { get; set; } 
 

@@ -19,6 +19,8 @@ namespace Course_Signup_System.Entities
 
         public string? Note { get; set; } = null!;
         
+        public DateTime CreateAt { get; set; }
+
         public int TuitionTypeId { get; set; }
         public TuitionType TuitionType { get; set; } = null!;
 

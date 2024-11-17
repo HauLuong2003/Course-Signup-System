@@ -32,8 +32,9 @@ namespace Course_Signup_System.Data
             modelBuilder.Entity<Teacher>().ToTable("Teachers");
             modelBuilder.Entity<Student>().ToTable("Students");
             modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
-            modelBuilder.Entity<User>().HasIndex(u=> u.PhoneNumber).IsUnique();
-            modelBuilder.Entity<Teacher>().HasIndex(u=>u.IdentityCard ).IsUnique();
+            modelBuilder.Entity<Teacher>().HasIndex(T=> T.PhoneNumber).IsUnique();
+            modelBuilder.Entity<Student>().HasIndex(s => s.PhoneNumber).IsUnique();
+            modelBuilder.Entity<Teacher>().HasIndex(t=>t.IdentityCard ).IsUnique();
 
             modelBuilder.Entity<TeachSchedule>()
                      .Property(t => t.StudyTime)

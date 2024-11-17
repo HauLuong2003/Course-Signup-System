@@ -8,7 +8,6 @@ namespace Course_Signup_System.Entities
     {
         public DateTime BirthDay { get; set; }
 
-        [StringLength(1)]
         public char Sex { get; set; }
 
         [StringLength(10)]

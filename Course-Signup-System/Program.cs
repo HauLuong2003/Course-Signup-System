@@ -1,4 +1,8 @@
+﻿using AutoMapper;
+using Course_Signup_System.Common.Mapping;
 using Course_Signup_System.Data;
+using Course_Signup_System.Repositories;
+using Course_Signup_System.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json.Serialization;
@@ -17,6 +21,7 @@ namespace Course_Signup_System
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             builder.Services.AddDbContext<CourseSystemDB>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default")?? throw new InvalidOperationException("connection string not fouind"));
@@ -26,6 +31,13 @@ namespace Course_Signup_System
            {
                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
            });
+            builder.Services.AddAutoMapper(typeof(MapperProfile));
+            builder.Services.AddScoped<IUserService, UserRepository>();
+            builder.Services.AddScoped<IHashPasword, HashPasswordRepository>();
+            builder.Services.AddScoped<IRoleService, RoleRepository>();
+            builder.Services.AddScoped<IStudentService, StudentRepository>();
+            builder.Services.AddScoped<ITeacherService, TeacherRepository>();
+            builder.Services.AddScoped<GenerateService,GenerateRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

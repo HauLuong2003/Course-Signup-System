@@ -96,6 +96,19 @@ namespace Course_Signup_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TuitionTypes",
+                columns: table => new
+                {
+                    TuitionTypeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TuitionName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TuitionTypes", x => x.TuitionTypeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Classes",
                 columns: table => new
                 {
@@ -157,16 +170,13 @@ namespace Course_Signup_System.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
-                    FristName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    BirthDay = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Sex = table.Column<string>(type: "nvarchar(1)", maxLength: 1, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     PasswordHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     PasswordSalt = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Avatar = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false)
@@ -188,6 +198,7 @@ namespace Course_Signup_System.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsClose = table.Column<bool>(type: "bit", nullable: false),
                     SubjectId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     ClassId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false)
@@ -253,8 +264,12 @@ namespace Course_Signup_System.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
-                    Parents = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    Parents = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    BirthDay = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Sex = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -270,7 +285,11 @@ namespace Course_Signup_System.Migrations
                 name: "Teachers",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    BirthDay = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Sex = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     MainTeachingSubject = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     PartTimeSubject = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     TaxCode = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -292,8 +311,7 @@ namespace Course_Signup_System.Migrations
                 {
                     GradeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Score = table.Column<double>(type: "float", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(11)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(13)", nullable: false),
                     SubjectId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     GradeTypeId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -326,13 +344,10 @@ namespace Course_Signup_System.Migrations
                 {
                     StudentClassId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Tuition = table.Column<double>(type: "float", nullable: false),
-                    Discount = table.Column<double>(type: "float", nullable: false),
-                    Surcharge = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(11)", nullable: false),
-                    ClassId = table.Column<string>(type: "nvarchar(20)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(13)", nullable: false),
+                    ClassId = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -352,6 +367,31 @@ namespace Course_Signup_System.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmployeeSalary",
+                columns: table => new
+                {
+                    EmployeeSalaryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Salary = table.Column<double>(type: "float", nullable: false),
+                    AllowanceName = table.Column<double>(type: "float", nullable: false),
+                    Allowance = table.Column<double>(type: "float", nullable: false),
+                    SalaryReal = table.Column<double>(type: "float", nullable: false),
+                    IsClose = table.Column<bool>(type: "bit", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TeacherUserId = table.Column<string>(type: "nvarchar(13)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeSalary", x => x.EmployeeSalaryId);
+                    table.ForeignKey(
+                        name: "FK_EmployeeSalary_Teachers_TeacherUserId",
+                        column: x => x.TeacherUserId,
+                        principalTable: "Teachers",
+                        principalColumn: "UserId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TeachSchedules",
                 columns: table => new
                 {
@@ -361,7 +401,7 @@ namespace Course_Signup_System.Migrations
                     StudyDay = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(11)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(13)", nullable: false),
                     ClassId = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     SubjectId = table.Column<string>(type: "nvarchar(20)", nullable: false)
                 },
@@ -387,6 +427,57 @@ namespace Course_Signup_System.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "GradeColumns",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Score = table.Column<double>(type: "float", nullable: false),
+                    GradeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GradeColumns", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GradeColumns_Grade_GradeId",
+                        column: x => x.GradeId,
+                        principalTable: "Grade",
+                        principalColumn: "GradeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PayTuitions",
+                columns: table => new
+                {
+                    PayTuitionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Tuition = table.Column<double>(type: "float", nullable: false),
+                    Discount = table.Column<double>(type: "float", nullable: false),
+                    Surcharge = table.Column<double>(type: "float", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TuitionTypeId = table.Column<int>(type: "int", nullable: false),
+                    StudentClassId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PayTuitions", x => x.PayTuitionId);
+                    table.ForeignKey(
+                        name: "FK_PayTuitions_StudentClasses_StudentClassId",
+                        column: x => x.StudentClassId,
+                        principalTable: "StudentClasses",
+                        principalColumn: "StudentClassId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PayTuitions_TuitionTypes_TuitionTypeId",
+                        column: x => x.TuitionTypeId,
+                        principalTable: "TuitionTypes",
+                        principalColumn: "TuitionTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Classes_ClassOfId",
                 table: "Classes",
@@ -396,6 +487,11 @@ namespace Course_Signup_System.Migrations
                 name: "IX_Classes_FacultyId",
                 table: "Classes",
                 column: "FacultyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeeSalary_TeacherUserId",
+                table: "EmployeeSalary",
+                column: "TeacherUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Grade_GradeTypeId",
@@ -413,6 +509,21 @@ namespace Course_Signup_System.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GradeColumns_GradeId",
+                table: "GradeColumns",
+                column: "GradeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PayTuitions_StudentClassId",
+                table: "PayTuitions",
+                column: "StudentClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PayTuitions_TuitionTypeId",
+                table: "PayTuitions",
+                column: "TuitionTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StudentClasses_ClassId",
                 table: "StudentClasses",
                 column: "ClassId");
@@ -421,6 +532,13 @@ namespace Course_Signup_System.Migrations
                 name: "IX_StudentClasses_UserId",
                 table: "StudentClasses",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_PhoneNumber",
+                table: "Students",
+                column: "PhoneNumber",
+                unique: true,
+                filter: "[PhoneNumber] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubjectClasses_ClassId",
@@ -470,6 +588,13 @@ namespace Course_Signup_System.Migrations
                 filter: "[IdentityCard] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Teachers_PhoneNumber",
+                table: "Teachers",
+                column: "PhoneNumber",
+                unique: true,
+                filter: "[PhoneNumber] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TeachSchedules_ClassId",
                 table: "TeachSchedules",
                 column: "ClassId");
@@ -491,12 +616,6 @@ namespace Course_Signup_System.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_PhoneNumber",
-                table: "Users",
-                column: "PhoneNumber",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
@@ -505,13 +624,16 @@ namespace Course_Signup_System.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Grade");
+                name: "EmployeeSalary");
+
+            migrationBuilder.DropTable(
+                name: "GradeColumns");
+
+            migrationBuilder.DropTable(
+                name: "PayTuitions");
 
             migrationBuilder.DropTable(
                 name: "SchoolHolidaySchedules");
-
-            migrationBuilder.DropTable(
-                name: "StudentClasses");
 
             migrationBuilder.DropTable(
                 name: "SubjectClasses");
@@ -523,25 +645,34 @@ namespace Course_Signup_System.Migrations
                 name: "TeachSchedules");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Grade");
 
             migrationBuilder.DropTable(
-                name: "GradeTypes");
+                name: "StudentClasses");
 
             migrationBuilder.DropTable(
-                name: "Classes");
-
-            migrationBuilder.DropTable(
-                name: "Subjects");
+                name: "TuitionTypes");
 
             migrationBuilder.DropTable(
                 name: "Teachers");
 
             migrationBuilder.DropTable(
-                name: "ClassOf");
+                name: "GradeTypes");
+
+            migrationBuilder.DropTable(
+                name: "Subjects");
+
+            migrationBuilder.DropTable(
+                name: "Classes");
+
+            migrationBuilder.DropTable(
+                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "Departments");
+
+            migrationBuilder.DropTable(
+                name: "ClassOf");
 
             migrationBuilder.DropTable(
                 name: "Faculties");
