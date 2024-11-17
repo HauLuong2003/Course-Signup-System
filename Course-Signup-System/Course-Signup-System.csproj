@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\NewFolder\" />
     <Folder Include="wwwroot\Image\" />
   </ItemGroup>
 

@@ -12,12 +12,11 @@ namespace Course_Signup_System.Controllers
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;
-        private readonly IMapper _mapper;
 
-        public RoleController(IRoleService roleService, IMapper mapper)
+        public RoleController(IRoleService roleService)
         {
             _roleService = roleService;
-            _mapper = mapper;
+      
         }
 
         [HttpPost]
@@ -25,10 +24,8 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var role = _mapper.Map<Role>(roleDTO);
-                var r = await _roleService.CreateRole(role);
-                var roleMapper = _mapper.Map<RoleDTO>(r);
-                return Ok(roleMapper);
+                var role = await _roleService.CreateRole(roleDTO);               
+                return Ok(role);
             }
             catch (Exception ex)
             {
@@ -41,8 +38,8 @@ namespace Course_Signup_System.Controllers
             try
             {
                 var roles = await _roleService.GetRoles();
-                var RoleMapper = _mapper.Map<List<RoleDTO>>(roles);
-                return Ok(RoleMapper);
+                
+                return Ok(roles);
             }
             catch (Exception ex)
             {
@@ -55,8 +52,8 @@ namespace Course_Signup_System.Controllers
             try
             {
                 var role = await _roleService.GetRoleById(Id);
-                var roleid = _mapper.Map<RoleDTO>(role);
-                return Ok(roleid);
+              
+                return Ok(role);
             }
             catch (Exception ex)
             {
@@ -80,10 +77,9 @@ namespace Course_Signup_System.Controllers
         public async Task<IActionResult> UpdateRole(RoleDTO roleDTO)
         {
             try{
-                var role = _mapper.Map<Role>(roleDTO);
-                var r = await _roleService.UpdateRole(role);
-                var roleMapper = _mapper.Map<RoleDTO>(r);
-                return Ok(roleMapper);
+               
+                var role = await _roleService.UpdateRole(roleDTO);               
+                return Ok(role);
             }
             catch (Exception ex)
             {

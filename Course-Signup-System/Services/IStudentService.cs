@@ -1,14 +1,15 @@
 ﻿using Course_Signup_System.Common;
+using Course_Signup_System.DTO;
 using Course_Signup_System.Entities;
 
 namespace Course_Signup_System.Services
 {
     public interface IStudentService
     {
-        Task<Student> GetStudentById(string id);
-        Task<Student> CreateStudent(Student student);
-        Task<ServiceResponse> UpdateStudent(Student student);
+        Task<StudentDTO> GetStudentById(string id);
+        Task<StudentDTO> CreateStudent(StudentDTO student);
+        Task<ServiceResponse> UpdateStudent(StudentDTO student);
         Task<ServiceResponse> DeleteStudent(string Id);
-        Task<List<Student>> GetAllStudents();
+        Task<List<StudentDTO>> GetAllStudents();
     }
 }

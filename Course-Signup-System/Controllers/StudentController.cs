@@ -12,12 +12,12 @@ namespace Course_Signup_System.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
-        private readonly IMapper _mappper;
+      
         private readonly IHashPasword _hashPasword;
-        public StudentController(IStudentService studentService, IMapper mappper, IHashPasword hashPasword)
+        public StudentController(IStudentService studentService,  IHashPasword hashPasword)
         {
             _studentService = studentService;
-            _mappper = mappper;
+          
             _hashPasword = hashPasword;
         }
         [HttpGet]
@@ -26,8 +26,7 @@ namespace Course_Signup_System.Controllers
             try
             {
                 var students = await _studentService.GetAllStudents();
-                var Students = _mappper.Map<List<StudentDTO>>(students);
-                return Ok(Students);
+                return Ok(students);
             }
             catch (Exception ex)
             {
@@ -39,9 +38,8 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var students = await _studentService.GetStudentById(Id);
-                var Students = _mappper.Map<List<StudentDTO>>(students);
-                return Ok(Students);
+                var student = await _studentService.GetStudentById(Id);
+                return Ok(student);
             }
             catch (Exception ex)
             {
@@ -53,13 +51,8 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                _hashPasword.CreateHashPassword(studentDTO.Password, out string HashPassword, out string PasswordSalt);
-                var student = _mappper.Map<Student>(studentDTO);              
-                student.PasswordHash = HashPassword;
-                student.PasswordSalt = PasswordSalt;
-                var st = await _studentService.CreateStudent(student);
-                var s = _mappper.Map<StudentDTO>(st);
-                return Ok(s);
+                var st = await _studentService.CreateStudent(studentDTO);
+                return Ok(st);
             }
             catch (Exception ex)
             {
@@ -83,9 +76,8 @@ namespace Course_Signup_System.Controllers
         public async Task<IActionResult> UpdateStudent(StudentDTO studentDTO)
         {
             try
-            {
-                var st = _mappper.Map<Student>(studentDTO);
-                var student = await _studentService.UpdateStudent(st);
+            {         
+                var student = await _studentService.UpdateStudent(studentDTO);
                 return Ok(student);
             }
             catch (Exception ex)

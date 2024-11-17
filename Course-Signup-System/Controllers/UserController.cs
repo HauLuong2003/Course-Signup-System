@@ -12,27 +12,18 @@ namespace Course_Signup_System.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
-        private readonly IHashPasword _hashPasword;
-        public UserController(IUserService userService, IMapper mapper, IHashPasword hashPasword)
+       
+        public UserController(IUserService userService)
         {
-            _userService = userService;
-            _mapper = mapper;
-            _hashPasword = hashPasword;
+            _userService = userService;  
         }
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserDTO userDto)
         {
             try
-            {
-
-                _hashPasword.CreateHashPassword(userDto.Password, out string HashPassword, out string PasswordSalt);
-                var user = _mapper.Map<User>(userDto);
-                user.PasswordHash = HashPassword;
-                user.PasswordSalt = PasswordSalt;
-                var u = await _userService.CreateUser(user);
-                var Usermapper = _mapper.Map<UserDTO>(u);
-                return Ok(Usermapper);
+            {             
+                var user = await _userService.CreateUser(userDto);
+                return Ok(user);
             }
             catch (Exception ex)
             {
@@ -45,8 +36,7 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var u = await _userService.GetUser();
-                var users = _mapper.Map<List<UserDTO>>(u);
+                var users = await _userService.GetUser();
                 return Ok(users);
             }
             catch (Exception ex)
@@ -59,8 +49,8 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var u = await _userService.GetUserById(userId);
-                var user = _mapper.Map<UserDTO>(u);
+                var user = await _userService.GetUserById(userId);
+               
                 return Ok(user);
             }
             catch (Exception ex)
@@ -87,9 +77,9 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var user = _mapper.Map<User>(userDto);
-                var users = await _userService.UpdateUser(user);            
-                return Ok(users);
+                
+                var user = await _userService.UpdateUser(userDto);            
+                return Ok(user);
             }
             catch (Exception ex)
             {

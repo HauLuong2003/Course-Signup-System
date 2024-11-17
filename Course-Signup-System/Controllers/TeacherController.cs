@@ -12,13 +12,10 @@ namespace Course_Signup_System.Controllers
     public class TeacherController : ControllerBase
     {
         private readonly ITeacherService _teacherService;
-        private readonly IMapper _mappper;
-        private readonly IHashPasword _hashPasword;
-        public TeacherController(ITeacherService teacherService, IMapper mappper, IHashPasword hashPasword)
+
+        public TeacherController(ITeacherService teacherService)
         {
             _teacherService = teacherService;
-            _mappper = mappper;
-            _hashPasword = hashPasword;
         }
         [HttpGet]
         public async Task<IActionResult> GetTeachers()
@@ -26,8 +23,8 @@ namespace Course_Signup_System.Controllers
             try
             {
                 var teachers = await _teacherService.GetAllTeachers();
-                var t = _mappper.Map<List<TeacherDTO>>(teachers);
-                return Ok(t);
+               
+                return Ok(teachers);
             }
             catch (Exception ex)
             {
@@ -40,8 +37,8 @@ namespace Course_Signup_System.Controllers
             try
             {
                 var teacher = await _teacherService.GetTeacherById(Id);
-                var Teacher = _mappper.Map<List<TeacherDTO>>(teacher);
-                return Ok(Teacher);
+                
+                return Ok(teacher);
             }
             catch (Exception ex)
             {
@@ -49,17 +46,12 @@ namespace Course_Signup_System.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> CreateStudent(TeacherDTO teacherDTO)
+        public async Task<IActionResult> CreateTeacher(TeacherDTO teacherDTO)
         {
             try
             {
-                _hashPasword.CreateHashPassword(teacherDTO.Password, out string HashPassword, out string PasswordSalt);
-                var teacher = _mappper.Map<Teacher>(teacherDTO);
-                teacher.PasswordHash = HashPassword;
-                teacher.PasswordSalt = PasswordSalt;
-                var st = await _teacherService.CreateTeacher(teacher);
-                var s = _mappper.Map<TeacherDTO>(st);
-                return Ok(s);
+                var st = await _teacherService.CreateTeacher(teacherDTO);              
+                return Ok(st);
             }
             catch (Exception ex)
             {
@@ -67,12 +59,12 @@ namespace Course_Signup_System.Controllers
             }
         }
         [HttpDelete("Id")]
-        public async Task<IActionResult> DeleteStudent(string Id)
+        public async Task<IActionResult> DeleteTeacher(string Id)
         {
             try
             {
-                var student = await _teacherService.DeleteTeacher(Id);
-                return Ok(student);
+                var teacher = await _teacherService.DeleteTeacher(Id);
+                return Ok(teacher);
             }
             catch (Exception ex)
             {
@@ -80,13 +72,13 @@ namespace Course_Signup_System.Controllers
             }
         }
         [HttpPut("Id")]
-        public async Task<IActionResult> UpdateStudent(TeacherDTO teacherDTO)
+        public async Task<IActionResult> UpdateTeacher(TeacherDTO teacherDTO)
         {
             try
             {
-                var st = _mappper.Map<Teacher>(teacherDTO);
-                var student = await _teacherService.UpdateTeacher(st);
-                return Ok(student);
+                
+                var teacher = await _teacherService.UpdateTeacher(teacherDTO);
+                return Ok(teacher);
             }
             catch (Exception ex)
             {

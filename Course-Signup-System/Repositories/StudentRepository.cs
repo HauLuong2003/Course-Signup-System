@@ -1,5 +1,7 @@
-﻿using Course_Signup_System.Common;
+﻿using AutoMapper;
+using Course_Signup_System.Common;
 using Course_Signup_System.Data;
+using Course_Signup_System.DTO;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
 using Microsoft.EntityFrameworkCore;
@@ -10,19 +12,28 @@ namespace Course_Signup_System.Repositories
     {
         private readonly CourseSystemDB _courseSystemDB;
         private readonly GenerateService _generateService;
-        public StudentRepository(CourseSystemDB courseSystemDB, GenerateService generateService)
+        private readonly IMapper _mapper;
+        private readonly IHashPasword _hashPasword;
+        public StudentRepository(CourseSystemDB courseSystemDB, GenerateService generateService, IMapper mapper, IHashPasword hashPasword)
         {
             _courseSystemDB = courseSystemDB;
             _generateService = generateService;
+            _mapper = mapper;
+            _hashPasword = hashPasword;
         }
-        public async Task<Student> CreateStudent(Student student)
+        public async Task<StudentDTO> CreateStudent(StudentDTO student)
         {
+           _hashPasword.CreateHashPassword(student.Password, out string HashPassword, out string PasswordSalt);
             var code = await _generateService.GenerateCodeAsync();
-            student.UserId = code;
-            student.CreateAt = DateTime.Now;
-            await _courseSystemDB.Students.AddAsync(student);
+            var students = _mapper.Map<Student>(student);
+            students.UserId = code;
+            students.CreateAt = DateTime.Now;
+
+            students.PasswordHash = HashPassword;
+            students.PasswordSalt = PasswordSalt;
+            await _courseSystemDB.Students.AddAsync(students);
             await _courseSystemDB.SaveChangesAsync();
-            return student;
+            return _mapper.Map<StudentDTO>(students);
         }
 
         public async Task<ServiceResponse> DeleteStudent(string Id)
@@ -37,23 +48,25 @@ namespace Course_Signup_System.Repositories
             return new ServiceResponse(true, "Delete success");
         }
 
-        public async Task<List<Student>> GetAllStudents()
+        public async Task<List<StudentDTO>> GetAllStudents()
         {
             var students = await _courseSystemDB.Students.ToListAsync();
-            return students;
+            return _mapper.Map<List<StudentDTO>>(students);
+            
         }
 
-        public async Task<Student> GetStudentById(string Id)
+        public async Task<StudentDTO> GetStudentById(string Id)
         {
             var studentId = await _courseSystemDB.Students.FindAsync(Id);
             if (studentId is null)
             {
                throw new ArgumentNullException ("Student Id is null");
             }
-            return studentId;
+            return _mapper.Map<StudentDTO>(studentId);
+             
         }
 
-        public async Task<ServiceResponse> UpdateStudent(Student student)
+        public async Task<ServiceResponse> UpdateStudent(StudentDTO student)
         {
             var studentId = await _courseSystemDB.Students.FindAsync(student.UserId);
             if (studentId is null)
@@ -72,5 +85,7 @@ namespace Course_Signup_System.Repositories
             await _courseSystemDB.SaveChangesAsync();
             return new ServiceResponse(true, "Update success");
         }
+
+        
     }
 }

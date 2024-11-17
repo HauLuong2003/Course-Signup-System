@@ -1,5 +1,7 @@
-﻿using Course_Signup_System.Common;
+﻿using AutoMapper;
+using Course_Signup_System.Common;
 using Course_Signup_System.Data;
+using Course_Signup_System.DTO;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
 using Microsoft.EntityFrameworkCore;
@@ -9,20 +11,22 @@ namespace Course_Signup_System.Repositories
     public class RoleRepository : IRoleService
     {
         private readonly CourseSystemDB _courseDb;
-
-        public RoleRepository(CourseSystemDB courseDb) 
+        private readonly IMapper _mapper;
+        public RoleRepository(CourseSystemDB courseDb,IMapper mapper) 
         {
             _courseDb = courseDb;
+            _mapper = mapper;
         }
-        public async Task<Role> CreateRole(Role role)
+        public async Task<RoleDTO> CreateRole(RoleDTO roleDto)
         {
-           if (role == null)
+           if (roleDto == null)
            {
                 throw new ArgumentNullException("Role is null");
            }
+           var role = _mapper.Map<Role>(roleDto);
             _courseDb.Roles.Add(role);
             await _courseDb.SaveChangesAsync();
-            return role;
+            return _mapper.Map<RoleDTO>(role);
         }
 
         public async Task<ServiceResponse> DeleteRole(int Id)
@@ -37,30 +41,30 @@ namespace Course_Signup_System.Repositories
             return new ServiceResponse(true, "Delete success");
         }
 
-        public async Task<Role> GetRoleById(int Id)
+        public async Task<RoleDTO> GetRoleById(int Id)
         {
             var roleId = await _courseDb.Roles.FindAsync(Id);
             if (roleId is null)
             {
                 throw new ArgumentNullException("Role Id is null");
             }
-            return roleId;
+            return _mapper.Map<RoleDTO>(roleId);
         }
 
-        public async Task<List<Role>> GetRoles()
+        public async Task<List<RoleDTO>> GetRoles()
         {
             var Roles = await _courseDb.Roles.ToListAsync();
-            return Roles;
+            return _mapper.Map<List<RoleDTO>>(Roles);
         }
 
-        public async Task<ServiceResponse> UpdateRole(Role role)
+        public async Task<ServiceResponse> UpdateRole(RoleDTO roleDTO)
         {
-           var roleId = await _courseDb.Roles.FindAsync(role.RoleId);
+           var roleId = await _courseDb.Roles.FindAsync(roleDTO.RoleId);
            if( roleId is null)
            {
                return new ServiceResponse(false,"role Id is null");
            }
-           roleId.RoleName = role.RoleName;
+           roleId.RoleName = roleDTO.RoleName;
             await _courseDb.SaveChangesAsync();
             return new ServiceResponse(true, "update sucess");
         }
