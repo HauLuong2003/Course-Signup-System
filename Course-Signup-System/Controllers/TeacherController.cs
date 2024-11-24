@@ -17,7 +17,7 @@ namespace Course_Signup_System.Controllers
         {
             _teacherService = teacherService;
         }
-        [HttpGet("{page}/{pagesize}")]
+        [HttpGet]
         public async Task<IActionResult> GetTeachers([FromQuery] int page = 1 ,int pagesize = 10)
         //page: Số trang bạn muốn lấy (bắt đầu từ 1).
         //pageSize: Số lượng bản ghi trên mỗi trang.

@@ -31,7 +31,7 @@ namespace Course_Signup_System.Controllers
             }
         }
 
-        [HttpGet("{page}/{pagesize}")]
+        [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery] int page = 1, [FromQuery] int pagesize =10)
         {
             try

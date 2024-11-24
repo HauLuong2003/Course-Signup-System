@@ -29,7 +29,7 @@ namespace Course_Signup_System.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetClassof(int page = 1, int pagesize = 10)
+        public async Task<IActionResult> GetClassof([FromQuery]int page = 1, [FromQuery] int pagesize = 10)
         {
             try
             {

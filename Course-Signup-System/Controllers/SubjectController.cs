@@ -14,7 +14,7 @@ namespace Course_Signup_System.Controllers
         {
             _subjectService = subjectService;
         }
-        [HttpGet("{page}/{pagesize}")]
+        [HttpGet]
         public async Task<IActionResult> GetSubject(int page =1, int pagesize =10)
         {
             try

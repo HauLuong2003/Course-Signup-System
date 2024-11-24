@@ -99,5 +99,41 @@ namespace Course_Signup_System.Repositories
             await _courseSystemDB.SaveChangesAsync();
             return new ServiceResponse(true, "update success");
         }
+
+        public async Task<List<StudentClassDTO>> GetStudentByPay(bool status)
+        {
+            var studentClass = await _courseSystemDB.StudentClasses.Where(st => st.Status == true)
+                                                     .Select(st => new StudentClassDTO
+                                                    {
+                                                        Name = st.Student.LastName + " " + st.Student.FirstName,
+                                                        ClassName = st.Class.ClassName,
+                                                        UserId = st.UserId,
+                                                        ClassId = st.ClassId,
+                                                        Status = st.Status
+                                                    }).ToListAsync();
+            if(studentClass == null)
+            {
+                throw new ArgumentNullException("Student is null");
+            }
+            return _mapper.Map<List<StudentClassDTO>>(studentClass);
+        }
+
+        public async Task<List<StudentClassDTO>> GetStudentNoPay(bool status)
+        {
+            var studentClass = await _courseSystemDB.StudentClasses.Where(st => st.Status == false)
+                                            .Select(st => new StudentClassDTO
+                                            {
+                                                 Name = st.Student.LastName + " " + st.Student.FirstName,
+                                                ClassName = st.Class.ClassName,
+                                                UserId = st.UserId,
+                                                ClassId = st.ClassId,
+                                                Status = st.Status
+                                            }).ToListAsync();
+            if (studentClass == null)
+            {
+                throw new ArgumentNullException("Student is null");
+            }
+            return _mapper.Map<List<StudentClassDTO>>(studentClass);
+        }
     }
 }

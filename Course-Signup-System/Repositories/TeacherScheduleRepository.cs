@@ -2,7 +2,9 @@
 using Course_Signup_System.Data;
 using Course_Signup_System.DTO;
 using Course_Signup_System.DTO.Reponse;
+using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Course_Signup_System.Repositories
 {
@@ -16,29 +18,63 @@ namespace Course_Signup_System.Repositories
             _courseSystemDB = courseSystemDB;
         }
 
-        public Task<TeacherScheduleDTO> CreateTeacherSchedule(TeacherScheduleDTO TeacherScheduleDTO)
+        public async Task<TeacherScheduleDTO> CreateTeacherSchedule(TeacherScheduleDTO TeacherScheduleDTO)
         {
-            throw new NotImplementedException();
+           var teachSchedule = _mapper.Map<TeachSchedule>(TeacherScheduleDTO);
+           _courseSystemDB.TeachSchedules.Add(teachSchedule);
+            await _courseSystemDB.SaveChangesAsync();
+            return _mapper.Map<TeacherScheduleDTO>(teachSchedule);
         }
 
-        public Task<ServiceResponse> DeleteTeacherSchedule(int TeacherScheduleId)
+        public async Task<ServiceResponse> DeleteTeacherSchedule(int TeacherScheduleId)
         {
-            throw new NotImplementedException();
+            var teachSchedule = await _courseSystemDB.TeachSchedules.FindAsync(TeacherScheduleId);
+            if (teachSchedule == null)
+            {
+                return new ServiceResponse(false, "delete don't success");
+            }
+            _courseSystemDB.TeachSchedules.Remove(teachSchedule);
+            await _courseSystemDB.SaveChangesAsync();
+            return new ServiceResponse(true, "delete success");
         }
 
-        public Task<List<TeacherScheduleDTO>> GetTeacherSchedule()
+        public async Task<PageResult<TeacherScheduleDTO>> GetTeacherSchedule(int page, int pagesize)
         {
-            throw new NotImplementedException();
+            var query = _courseSystemDB.TeachSchedules.AsQueryable();
+            var count = await query.CountAsync();
+            var teachSchedule = await query.Skip((page-1)*pagesize)
+                                            .Take(pagesize).ToListAsync();
+            var teachScheduleDTO = _mapper.Map<List<TeacherScheduleDTO>>(teachSchedule);
+            return new PageResult<TeacherScheduleDTO>
+            {
+                Page = page,
+                PageSize = pagesize,
+                TotalRecoreds = count,
+                TotalPages = (int)Math.Ceiling(count / (double)pagesize),
+                Data = teachScheduleDTO
+            };
         }
 
-        public Task<TeacherScheduleDTO> GetTeacherScheduleById(int TeacherScheduleId)
+        public async Task<TeacherScheduleDTO> GetTeacherScheduleById(int TeacherScheduleId)
         {
-            throw new NotImplementedException();
+           var teachSchedule = await _courseSystemDB.TeachSchedules.FindAsync(TeacherScheduleId);
+            if(teachSchedule == null)
+            {
+                throw new ArgumentException("teach schedule is null");
+            }
+            return _mapper.Map<TeacherScheduleDTO>(teachSchedule);
         }
 
-        public Task<ServiceResponse> UpdateTeacherSchedule(int Id, TeacherScheduleDTO TeacherScheduleDTO)
+        public async Task<ServiceResponse> UpdateTeacherSchedule(int Id, TeacherScheduleDTO TeacherScheduleDTO)
         {
-            throw new NotImplementedException();
+            var teachSchedule = await _courseSystemDB.TeachSchedules.FindAsync(Id);
+            if (teachSchedule == null)
+            {
+                return new ServiceResponse(false, "teach schedule is null");
+            }
+            var shedule = _mapper.Map<TeachSchedule>(TeacherScheduleDTO);
+            _courseSystemDB.TeachSchedules.Update(shedule);
+            return new ServiceResponse(true, "update success");
         }
     }
 }

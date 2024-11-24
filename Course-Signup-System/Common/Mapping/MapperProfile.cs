@@ -29,6 +29,8 @@ namespace Course_Signup_System.Common.Mapping
             CreateMap<SubjectDTO, Subject>();
             CreateMap<SubjectClassDTO, SubjectClass>();
             CreateMap<SubjectClass, SubjectClassDTO>();
+            CreateMap<TeachSchedule, TeacherScheduleDTO>();
+            CreateMap<TeacherScheduleDTO, TeachSchedule>();
         }
     }
 }

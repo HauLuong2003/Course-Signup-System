@@ -7,7 +7,7 @@ namespace Course_Signup_System.Services
     {
         Task<TeacherScheduleDTO> CreateTeacherSchedule(TeacherScheduleDTO TeacherScheduleDTO);
         Task<ServiceResponse> UpdateTeacherSchedule(int Id, TeacherScheduleDTO TeacherScheduleDTO);
-        Task<List<TeacherScheduleDTO>> GetTeacherSchedule();
+        Task<PageResult<TeacherScheduleDTO>> GetTeacherSchedule(int page, int pagesize);
         Task<ServiceResponse> DeleteTeacherSchedule(int TeacherScheduleId);
         Task<TeacherScheduleDTO> GetTeacherScheduleById(int TeacherScheduleId);
     }
