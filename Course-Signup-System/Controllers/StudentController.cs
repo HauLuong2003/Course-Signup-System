@@ -12,20 +12,17 @@ namespace Course_Signup_System.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
-      
-        private readonly IHashPasword _hashPasword;
-        public StudentController(IStudentService studentService,  IHashPasword hashPasword)
+
+        public StudentController(IStudentService studentService)
         {
             _studentService = studentService;
-          
-            _hashPasword = hashPasword;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetStudents()
+        [HttpGet("{page}/{pagesize}")]
+        public async Task<IActionResult> GetStudents([FromQuery] int page = 1, [FromQuery] int pagesize =10)
         {
             try
             {
-                var students = await _studentService.GetAllStudents();
+                var students = await _studentService.GetAllStudents(page, pagesize);
                 return Ok(students);
             }
             catch (Exception ex)
@@ -33,7 +30,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("Id")]
+        [HttpGet("{Id}")]
         public async Task<IActionResult> GetStudents(string Id)
         {
             try
@@ -59,7 +56,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete("Id")]
+        [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteStudent(string Id)
         {
             try
@@ -69,12 +66,16 @@ namespace Course_Signup_System.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
         }
-        [HttpPut("Id")]
-        public async Task<IActionResult> UpdateStudent(StudentDTO studentDTO)
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> UpdateStudent(string Id,StudentDTO studentDTO)
         {
+            if(Id != studentDTO.UserId)
+            {
+                return BadRequest();
+            }
             try
             {         
                 var student = await _studentService.UpdateStudent(studentDTO);
@@ -82,8 +83,27 @@ namespace Course_Signup_System.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
+        }
+        [HttpGet("Get-Student")]
+        public async Task<IActionResult> GetStudentByEmail(string email)
+        {
+            try
+            {
+                var Student = await _studentService.GetStudentByEmail(email);
+                return Ok(Student);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        [HttpGet("{Id}/schedules")]
+        public async Task<IActionResult> GetScheduleByStudent(string Id)
+        {
+            var schedule = await _studentService.GetScheduleClass(Id);
+            return Ok(schedule);
         }
     }
 }

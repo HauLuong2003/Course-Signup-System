@@ -17,6 +17,18 @@ namespace Course_Signup_System.Common.Mapping
             CreateMap<Student, StudentDTO>();
             CreateMap<RoleDTO, Role>();
             CreateMap<Role, RoleDTO>();
+            CreateMap<ClassOf, ClassOfDTO>();
+            CreateMap<ClassOfDTO, ClassOf>();
+            CreateMap<ClassDTO, Class>();
+            CreateMap<Class, ClassDTO>();
+            CreateMap<Faculty, FacultyDTO>();
+            CreateMap<FacultyDTO,Faculty>();
+            CreateMap<StudentClass, StudentClassDTO>();
+            CreateMap< StudentClassDTO, StudentClass>();
+            CreateMap<Subject, SubjectDTO>();
+            CreateMap<SubjectDTO, Subject>();
+            CreateMap<SubjectClassDTO, SubjectClass>();
+            CreateMap<SubjectClass, SubjectClassDTO>();
         }
     }
 }

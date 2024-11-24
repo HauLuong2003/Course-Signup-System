@@ -37,8 +37,7 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var roles = await _roleService.GetRoles();
-                
+                var roles = await _roleService.GetRoles();               
                 return Ok(roles);
             }
             catch (Exception ex)
@@ -73,9 +72,13 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut]
-        public async Task<IActionResult> UpdateRole(RoleDTO roleDTO)
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> UpdateRole(int Id,RoleDTO roleDTO)
         {
+            if(roleDTO.RoleId != Id)
+            {
+                return BadRequest("id and roleid incorrect");
+            }
             try{
                
                 var role = await _roleService.UpdateRole(roleDTO);               

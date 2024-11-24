@@ -31,12 +31,12 @@ namespace Course_Signup_System.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        [HttpGet("{page}/{pagesize}")]
+        public async Task<IActionResult> GetUsers([FromQuery] int page = 1, [FromQuery] int pagesize =10)
         {
             try
             {
-                var users = await _userService.GetUser();
+                var users = await _userService.GetUser(page,pagesize);
                 return Ok(users);
             }
             catch (Exception ex)
@@ -44,12 +44,12 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("Id")]
-        public async Task<IActionResult> GetUserById(string userId)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetUserById(string Id)
         {
             try
             {
-                var user = await _userService.GetUserById(userId);
+                var user = await _userService.GetUserById(Id);
                
                 return Ok(user);
             }
@@ -58,7 +58,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message); 
             }
         }
-        [HttpDelete("Id")]
+        [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteUser(string Id)
         {
             try
@@ -72,12 +72,15 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut]
-        public async Task<IActionResult> UpdateUser(UserDTO userDto)
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> UpdateUser(string Id,UserDTO userDto)
         {
+            if(Id != userDto.UserId)
+            {
+                return BadRequest("id and userid don't");
+            }
             try
             {
-                
                 var user = await _userService.UpdateUser(userDto);            
                 return Ok(user);
             }
@@ -86,6 +89,13 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
             
+        }
+
+        [HttpGet("Get-UserEmail")]
+        public async Task<IActionResult> GetUserbyrole(string email)
+        {
+            var result = await _userService.GetUserByEmail(email);
+            return Ok(result);
         }
     }
 }

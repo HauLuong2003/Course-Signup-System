@@ -1,5 +1,5 @@
-﻿using Course_Signup_System.Common;
-using Course_Signup_System.DTO;
+﻿using Course_Signup_System.DTO;
+using Course_Signup_System.DTO.Reponse;
 using Course_Signup_System.Entities;
 
 namespace Course_Signup_System.Services

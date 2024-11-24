@@ -17,12 +17,14 @@ namespace Course_Signup_System.Controllers
         {
             _teacherService = teacherService;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetTeachers()
+        [HttpGet("{page}/{pagesize}")]
+        public async Task<IActionResult> GetTeachers([FromQuery] int page = 1 ,int pagesize = 10)
+        //page: Số trang bạn muốn lấy (bắt đầu từ 1).
+        //pageSize: Số lượng bản ghi trên mỗi trang.
         {
             try
             {
-                var teachers = await _teacherService.GetAllTeachers();
+                var teachers = await _teacherService.GetAllTeachers(page, pagesize);
                
                 return Ok(teachers);
             }
@@ -31,7 +33,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("Id")]
+        [HttpGet("{Id}")]
         public async Task<IActionResult> GetTeacher(string Id)
         {
             try
@@ -46,7 +48,7 @@ namespace Course_Signup_System.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> CreateTeacher(TeacherDTO teacherDTO)
+        public async Task<IActionResult> CreateTeacher([FromBody]TeacherDTO teacherDTO)
         {
             try
             {
@@ -58,7 +60,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete("Id")]
+        [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteTeacher(string Id)
         {
             try
@@ -71,9 +73,13 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("Id")]
-        public async Task<IActionResult> UpdateTeacher(TeacherDTO teacherDTO)
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> UpdateTeacher(string Id,TeacherDTO teacherDTO)
         {
+            if (teacherDTO.UserId != Id)
+            {
+                return BadRequest("id and teacherid don't ");
+            }
             try
             {
                 
@@ -85,6 +91,20 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("Get-teacher")]
+        public async Task<IActionResult> GetTeacherByEmail(string Email)
+        {
+            var teacher = await _teacherService.GetTeacherByEmail(Email);
+            return Ok(teacher);
+        }
+        [HttpGet("search-teacher/{name}")]
+        public async Task<IActionResult> Searchteachers(string name)
+        {
+            var teacher = await _teacherService.SearchTeacher(name);
+            return Ok(teacher);
+        }
+            
+
     }
 }
 

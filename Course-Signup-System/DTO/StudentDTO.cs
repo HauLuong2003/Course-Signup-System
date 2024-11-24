@@ -15,5 +15,7 @@ namespace Course_Signup_System.DTO
         public string PhoneNumber { get; set; } = null!;
        
         public string? Address { get; set; }
+        //public ICollection<StudentClassDTO> StudentClassesDTO { get; set; } = null!;
+
     }
 }

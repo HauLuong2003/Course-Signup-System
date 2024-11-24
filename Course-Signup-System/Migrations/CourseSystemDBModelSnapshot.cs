@@ -81,6 +81,12 @@ namespace Course_Signup_System.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<DateTime>("EndStudy")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartStudy")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("ClassOfId");
 
                     b.ToTable("ClassOf");
@@ -94,22 +100,10 @@ namespace Course_Signup_System.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"), 1L, 1);
 
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("DepartmentName")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
-
-                    b.Property<DateTime>("EndStudy")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartStudy")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("DepartmentId");
 

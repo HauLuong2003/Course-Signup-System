@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using Course_Signup_System.Common;
 using Course_Signup_System.Data;
 using Course_Signup_System.DTO;
+using Course_Signup_System.DTO.Reponse;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Course_Signup_System.Repositories
@@ -45,10 +46,30 @@ namespace Course_Signup_System.Repositories
             return new ServiceResponse(true, "delete success");
         }
 
-        public async Task<List<TeacherDTO>> GetAllTeachers()
+        public async Task<PageResult<TeacherDTO>> GetAllTeachers(int page, int pagesize)
+                                                //page: Số trang bạn muốn lấy (bắt đầu từ 1).
+                                                //pageSize: Số lượng bản ghi trên mỗi trang.
         {
-            var teachers = await _courseSystemDB.Teachers.ToListAsync();
-            return _mapper.Map<List<TeacherDTO>>(teachers);
+            //Lấy toàn bộ bảng Teacher  dưới dạng IQueryable
+            var query = _courseSystemDB.Teachers.AsQueryable();
+            //Đếm tổng số bản ghi trong bảng Teacher bằng cách gọi CountAsync.
+            var totalRecords = await query.CountAsync();
+
+            var teachers = await query
+                // Bỏ qua các bản ghi ở các trang trước
+                .Skip((page - 1) * pagesize) // skip use with Iqueryable and AsQueryable
+                //lấy đúng số lượng bản ghi theo kích thước của một trang.
+                .Take(pagesize)
+                .ToListAsync();        
+            var teacherdto = _mapper.Map<List<TeacherDTO>>(teachers);
+            return new PageResult<TeacherDTO>
+            {
+                TotalRecoreds = totalRecords,
+                Page = page,
+                PageSize = pagesize,
+                TotalPages = (int)Math.Ceiling(totalRecords/ (double)pagesize), // Làm tròn lên đến số nguyên gần nhất
+                Data = teacherdto
+            };
         }
 
         public async Task<TeacherDTO> GetTeacherById(string id)
@@ -59,6 +80,16 @@ namespace Course_Signup_System.Repositories
                 throw new ArgumentException("Teacher id is null");
             }
             return _mapper.Map<TeacherDTO>(teacher);
+        }
+
+        public  async Task<List<TeacherDTO>> GetTeacherByEmail(string Email)
+        {
+            var teacher = await _courseSystemDB.Teachers.Where(r => r.Email == Email).ToListAsync();
+            if (teacher is null)
+            {
+                throw new ArgumentNullException("stdent is null");
+            }
+            return _mapper.Map<List<TeacherDTO>>(teacher);
         }
 
         public async Task<ServiceResponse> UpdateTeacher(TeacherDTO teacherdto)
@@ -80,6 +111,14 @@ namespace Course_Signup_System.Repositories
             teacherId.UpdateAt = DateTime.Now;
             await _courseSystemDB.SaveChangesAsync();
             return new ServiceResponse(true, "Update success");
+        }
+
+        public async Task<List<TeacherDTO>> SearchTeacher(string Name)
+        {
+            var teachers = await _courseSystemDB.Teachers.Where(t =>             
+               ( t.LastName + " " + t.FirstName).Contains(Name)).ToListAsync();
+            // if( teachers)
+            return _mapper.Map<List<TeacherDTO>>(teachers);
         }
     }
 }

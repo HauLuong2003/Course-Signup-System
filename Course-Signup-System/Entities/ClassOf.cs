@@ -10,6 +10,10 @@ namespace Course_Signup_System.Entities
         [StringLength(150)]
         public string ClassOfName { get; set; } = null!;
 
+        public DateTime StartStudy { get; set; }
+
+        public DateTime EndStudy { get; set; }
+
         public ICollection<SubjectGradeType> SubjectGradeTypes { get; set; } = null!;
     }
 }

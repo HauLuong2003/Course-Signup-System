@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Course_Signup_System.Common;
 using Course_Signup_System.Data;
 using Course_Signup_System.DTO;
+using Course_Signup_System.DTO.Reponse;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
 using Microsoft.EntityFrameworkCore;

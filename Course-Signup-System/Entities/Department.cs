@@ -12,14 +12,6 @@ namespace Course_Signup_System.Entities
         [StringLength(150)]
         public string DepartmentName { get; set; } = null!;
 
-        public DateTime StartStudy { get; set; }
-
-        public DateTime EndStudy { get; set; }
-
-        public DateTime CreateAt { get; set; }
-
-        public DateTime UpdateAt { get; set; }
-
         public ICollection<Subject> Subjects { get; set; } = new List<Subject>();
 
         public ICollection<SubjectClass> SubjectClasses { get; set; } = new List<SubjectClass>();

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Course_Signup_System.Common.Mapping;
 using Course_Signup_System.Data;
+using Course_Signup_System.Entities;
 using Course_Signup_System.Repositories;
 using Course_Signup_System.Services;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,16 @@ namespace Course_Signup_System
             builder.Services.AddScoped<IStudentService, StudentRepository>();
             builder.Services.AddScoped<ITeacherService, TeacherRepository>();
             builder.Services.AddScoped<GenerateService,GenerateRepository>();
+            builder.Services.AddScoped<IAuthService,AuthRepository>();
+            builder.Services.AddScoped<IClassOfService, ClassOfRepository>();
+            builder.Services.AddScoped<IClassService, ClassRepository>();
+            builder.Services.AddScoped<IFacultyService, FacultyRepository>();
+            builder.Services.AddScoped<IStudentClassService,StudentClassRepository>();
+            builder.Services.AddScoped<ISubjectService, SubjectRepository>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentRepository>();
+            builder.Services.AddScoped<IFileStorageService, FileStorageRepository>();
+            builder.Services.AddScoped<ISubjectClassService,SubjectClassRepository>();
+            builder.Services.AddScoped<ITeacherScheduleService, TeacherScheduleRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

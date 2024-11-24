@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CrsH1UaS9FJt7qt2bax0kTPC9naLgBlQJxwVFf+rAG8=",
+  "Hash": "LnpqdcGO6IRlND53tCytU+b3CqkntJ14Dgh5UO0KAJU=",
   "Source": "Course-Signup-System",
   "BasePath": "_content/Course-Signup-System",
   "Mode": "Default",
@@ -15,5 +15,25 @@
       "Pattern": "**"
     }
   ],
-  "Assets": []
+  "Assets": [
+    {
+      "Identity": "D:\\Project_C#\\Course-Signup-System\\Course-Signup-System\\wwwroot\\Image\\anime-girl.jpg",
+      "SourceId": "Course-Signup-System",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Project_C#\\Course-Signup-System\\Course-Signup-System\\wwwroot\\",
+      "BasePath": "_content/Course-Signup-System",
+      "RelativePath": "Image/anime-girl.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Image\\anime-girl.jpg"
+    }
+  ]
 }

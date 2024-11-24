@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Course_Signup_System.Entities
 {
-    public class SubjectClass// môn học trong lớp và tổ bộ môn 
+    public class SubjectClass// môn học trong lớp và tổ bộ môn // danh sach mon hoc
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]

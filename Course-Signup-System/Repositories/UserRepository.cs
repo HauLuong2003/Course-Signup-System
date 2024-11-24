@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
-using Course_Signup_System.Common;
 using Course_Signup_System.Data;
 using Course_Signup_System.DTO;
+using Course_Signup_System.DTO.Reponse;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace Course_Signup_System.Repositories
 {
@@ -43,10 +44,22 @@ namespace Course_Signup_System.Repositories
             return new ServiceResponse(true, "Delete success");
         }
 
-        public async Task<List<UserDTO>> GetUser()
+        public async Task<PageResult<UserDTO>> GetUser(int page, int pagesize)
         {
-           var users = await _courseSystemDB.Users.ToListAsync();
-            return _mapper.Map<List<UserDTO>>(users);
+            var query = _courseSystemDB.Users.AsQueryable();
+            var count = await query.CountAsync();
+            var user = await query.Skip((page-1)*pagesize)
+                                    .Take(pagesize).ToListAsync();
+            var userdto =  _mapper.Map<List<UserDTO>>(user);
+            return new PageResult<UserDTO>
+            {
+                Page = page,
+                PageSize = pagesize,
+                TotalRecoreds = count,
+                TotalPages = (int)Math.Ceiling(count / (double)pagesize),
+                Data = userdto
+            };
+
         }
 
         public async Task<UserDTO> GetUserById(string Id)
@@ -77,5 +90,19 @@ namespace Course_Signup_System.Repositories
             await _courseSystemDB.SaveChangesAsync();
             return new ServiceResponse(true, "Update success");
         }
+
+        public async Task<List<UserDTO>> GetUserByEmail(string Email)
+        {
+                var user = await _courseSystemDB.Users.Where(r => r.Email == Email).ToListAsync();
+
+                if (user is null)
+                {
+                    throw new ArgumentNullException("user is null");
+                }
+                return _mapper.Map<List<UserDTO>>(user);
+                
+        }
+            
+
     }
 }

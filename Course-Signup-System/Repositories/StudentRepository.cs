@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Course_Signup_System.Common;
 using Course_Signup_System.Data;
 using Course_Signup_System.DTO;
+using Course_Signup_System.DTO.Reponse;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +28,6 @@ namespace Course_Signup_System.Repositories
             var students = _mapper.Map<Student>(student);
             students.UserId = code;
             students.CreateAt = DateTime.Now;
-
             students.PasswordHash = HashPassword;
             students.PasswordSalt = PasswordSalt;
             await _courseSystemDB.Students.AddAsync(students);
@@ -48,10 +47,24 @@ namespace Course_Signup_System.Repositories
             return new ServiceResponse(true, "Delete success");
         }
 
-        public async Task<List<StudentDTO>> GetAllStudents()
+        public async Task<PageResult<StudentDTO>> GetAllStudents(int page, int pagesize)
         {
-            var students = await _courseSystemDB.Students.ToListAsync();
-            return _mapper.Map<List<StudentDTO>>(students);
+            //lấy toàn bộ student dưới dạng queryable
+            var query =  _courseSystemDB.Students.AsQueryable();
+            //lấy số lượng
+            var count = await query.CountAsync();
+            var student = await query.Skip((page - 1) * pagesize)
+                                     .Take(pagesize).ToListAsync();
+            var students = _mapper.Map<List<StudentDTO>>(student);
+
+            return new PageResult<StudentDTO>
+            {
+                Page = page,
+                PageSize = pagesize,
+                TotalPages = (int) Math.Ceiling(count / (double)pagesize),
+                TotalRecoreds = count,
+                Data = students
+            } ;
             
         }
 
@@ -64,6 +77,17 @@ namespace Course_Signup_System.Repositories
             }
             return _mapper.Map<StudentDTO>(studentId);
              
+        }
+
+        public async Task<List<StudentDTO>> GetStudentByEmail(string Email)
+        {
+            var student = await _courseSystemDB.Students.Where(r => r.Email == Email).ToListAsync();
+            if(student is null)
+            {
+                throw  new ArgumentNullException("stdent is null");
+            }
+            return _mapper.Map<List<StudentDTO>>(student);  
+
         }
 
         public async Task<ServiceResponse> UpdateStudent(StudentDTO student)
@@ -86,6 +110,34 @@ namespace Course_Signup_System.Repositories
             return new ServiceResponse(true, "Update success");
         }
 
-        
+        public async Task<List<StudentDTO>> SearchStudent(string Name)
+        {
+            var students = await _courseSystemDB.Students.Where(t =>
+               (t.LastName + " " + t.FirstName).Contains(Name)).ToListAsync();
+            // if( teachers)
+            return _mapper.Map<List<StudentDTO>>(students);
+        }
+
+        public async Task<List<TeachSchedule>> GetScheduleClass(string StudentId)
+        {
+            var schedule = await _courseSystemDB.StudentClasses.Where(st => st.UserId == StudentId && st.Status)
+                                                                .SelectMany(sc => sc.Class.TeachSchedules)
+                                                                .Select(ts => new TeachSchedule
+                                                                {
+                                                                    StudyTime = ts.StudyTime,
+                                                                    StudyDay = ts.StudyDay,
+                                                                    StartTime = ts.StartTime,
+                                                                    EndTime = ts.EndTime,
+                                                                    ClassId = ts.Class.ClassId,
+                                                                    UserId = ts.Teacher.UserId,
+                                                                    SubjectId = ts.Subject.SubjectId,
+                                                                })
+                                                                .ToListAsync();
+            if(schedule == null)
+            {
+                throw new Exception("schedule is null");
+            }
+            return schedule;
+        }
     }
 }
