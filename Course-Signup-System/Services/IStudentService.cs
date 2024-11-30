@@ -14,5 +14,6 @@ namespace Course_Signup_System.Services
         Task<List<StudentDTO>> GetStudentByEmail(string Email);
         Task<List<StudentDTO>> SearchStudent(string Name);
         Task<List<TeachSchedule>> GetScheduleClass(string StudentId);
+
     }
 }

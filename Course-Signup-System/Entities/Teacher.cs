@@ -16,11 +16,10 @@ namespace Course_Signup_System.Entities
         [StringLength(255)]
         public string? Address { get; set; }
 
+        public string SubjectId { get; set; } = null!;
+        public Subject Subject { get; set; } = null!;
         [StringLength(255)]
-        public string MainTeachingSubject { get; set; } = null!;
-
-        [StringLength(255)]
-        public string PartTimeSubject { get;set; } = null!;
+        public string? PartTimeSubject { get;set; } = null!;
 
         [StringLength(255)]
         public string TaxCode { get; set; } = null!;

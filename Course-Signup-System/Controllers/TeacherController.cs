@@ -30,7 +30,7 @@ namespace Course_Signup_System.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
         }
         [HttpGet("{Id}")]
@@ -44,7 +44,7 @@ namespace Course_Signup_System.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
         }
         [HttpPost]
@@ -94,8 +94,15 @@ namespace Course_Signup_System.Controllers
         [HttpGet("Get-teacher")]
         public async Task<IActionResult> GetTeacherByEmail(string Email)
         {
-            var teacher = await _teacherService.GetTeacherByEmail(Email);
-            return Ok(teacher);
+            try
+            {
+                var teacher = await _teacherService.GetTeacherByEmail(Email);
+                return Ok(teacher);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
         [HttpGet("search-teacher/{name}")]
         public async Task<IActionResult> Searchteachers(string name)
@@ -103,8 +110,20 @@ namespace Course_Signup_System.Controllers
             var teacher = await _teacherService.SearchTeacher(name);
             return Ok(teacher);
         }
-            
 
+        [HttpGet("GetSalaryTeacher")]
+        public async Task<IActionResult> GetSalaryOfTeacher(string Id)
+        {
+            try
+            {
+                var teacher = await _teacherService.GetSalaryOfTeacher(Id);
+                return Ok(teacher);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }
 

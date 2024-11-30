@@ -120,5 +120,22 @@ namespace Course_Signup_System.Repositories
             // if( teachers)
             return _mapper.Map<List<TeacherDTO>>(teachers);
         }
+
+        public async Task<TeacherSalary> GetSalaryOfTeacher(string TeacherId)
+        {
+            var classInfo = await _courseSystemDB.TeachSchedules.Include(ts => ts.Class)
+                                        .Include(ts => ts.Class.StudentClasses)
+                                       .Where(c => c.UserId == TeacherId)                                      
+                                       .FirstOrDefaultAsync();                       
+            // Tổng học phí = học phí mỗi học sinh * số lượng học sinh
+            var count  = classInfo!.Class.StudentClasses.Count();
+            var totalReneve = classInfo.Class.Tuition * count;
+            return new TeacherSalary
+            {
+                TotalRevenue = totalReneve,
+                SalaryTeacher = totalReneve * count / 100
+            };
+
+        }
     }
 }

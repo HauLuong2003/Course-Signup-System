@@ -102,8 +102,15 @@ namespace Course_Signup_System.Controllers
         [HttpGet("{Id}/schedules")]
         public async Task<IActionResult> GetScheduleByStudent(string Id)
         {
-            var schedule = await _studentService.GetScheduleClass(Id);
-            return Ok(schedule);
+            try
+            {
+                var schedule = await _studentService.GetScheduleClass(Id);
+                return Ok(schedule);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

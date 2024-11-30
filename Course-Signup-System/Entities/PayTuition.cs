@@ -15,7 +15,7 @@ namespace Course_Signup_System.Entities
 
         public double Surcharge { set; get; }// phí phụ thu
 
-        public double EffectiveChargeRate => (Tuition - (Tuition * Discount) / 100) + Surcharge;
+        public double EffectiveChargeRate {  get; set; }
 
         public string? Note { get; set; } = null!;
         

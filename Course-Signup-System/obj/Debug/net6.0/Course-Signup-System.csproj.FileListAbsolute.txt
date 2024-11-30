@@ -67,3 +67,11 @@ D:\Project_C#\Course-Signup-System\Course-Signup-System\obj\Debug\net6.0\ref\Cou
 D:\Project_C#\Course-Signup-System\Course-Signup-System\obj\Debug\net6.0\Course-Signup-System.sourcelink.json
 D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\AutoMapper.dll
 D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Microsoft.AspNetCore.Authorization.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Microsoft.AspNetCore.Metadata.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Scrutor.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll

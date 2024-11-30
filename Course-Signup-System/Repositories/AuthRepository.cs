@@ -10,10 +10,12 @@ namespace Course_Signup_System.Repositories
     {
         private readonly CourseSystemDB _dbcontext;
         private readonly IHashPasword _hashPasword;
-        public AuthRepository(CourseSystemDB dbcontext, IHashPasword hashPasword)
+        private readonly GenerateService _generateService;
+        public AuthRepository(CourseSystemDB dbcontext, IHashPasword hashPasword, GenerateService generateService)
         {
             _dbcontext = dbcontext;
             _hashPasword = hashPasword;
+            _generateService = generateService;
         }
         public async Task<string> Login(Login login)
         {
@@ -27,13 +29,14 @@ namespace Course_Signup_System.Repositories
                     {
                         return "password is incorrect";
                     }
-                    return "true";
+                    var jwt =  await _generateService.GenerateJwtToken(teacher);
+                    return jwt;
                 }         
 
             }
             else
             {
-                var student = await _dbcontext.Students.FindAsync(login.Username);
+                var student = await _dbcontext.Users.FindAsync(login.Username);
                 if(student is null) return  "code incorrect";
                 else
                 {
@@ -41,7 +44,8 @@ namespace Course_Signup_System.Repositories
                     {
                         return "password is incorrect";
                     }
-                    return "true";
+                    var jwt = await _generateService.GenerateJwtToken(student);
+                    return jwt;
                 }
             }
         }

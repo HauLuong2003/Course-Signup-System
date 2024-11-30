@@ -23,7 +23,7 @@ namespace Course_Signup_System.Repositories
            var subjectClass =  _mapper.Map<SubjectClass>(SubjectClassDTO);
             _courseSystemDB.SubjectClasses.Add(subjectClass);
             await _courseSystemDB.SaveChangesAsync();
-            return _mapper.Map< SubjectClassDTO>(subjectClass);
+            return _mapper.Map<SubjectClassDTO>(subjectClass);
         }
 
         public async Task<ServiceResponse> DeleteSubjectClass(int SubjectClassId)
@@ -65,9 +65,21 @@ namespace Course_Signup_System.Repositories
             return _mapper.Map<SubjectClassDTO>(subjectClass);
         }
 
-        public Task<ServiceResponse> UpdateSubjectClass(int Id, SubjectClassDTO SubjectClassDTO)
+        public async Task<ServiceResponse> UpdateSubjectClass(int Id, SubjectClassDTO SubjectClassDTO)
         {
-            throw new NotImplementedException();
+            var subjectClass = await _courseSystemDB.SubjectClasses.FindAsync(Id);
+            if (subjectClass == null)
+            {
+                return new ServiceResponse(false, "Update don't success");
+            }
+            var sc = _mapper.Map<SubjectClass>(SubjectClassDTO);
+            subjectClass.IsClose = sc.IsClose;
+            subjectClass.ClassId =sc.ClassId;
+            subjectClass.SubjectId =sc.SubjectId;
+            subjectClass.DepartmentId =sc.DepartmentId;
+            
+            await _courseSystemDB.SaveChangesAsync();
+            return new ServiceResponse(true, "Update success");
         }
     }
 }

@@ -12,5 +12,6 @@ namespace Course_Signup_System.Services
         Task<PageResult<TeacherDTO>> GetAllTeachers(int page, int pagesize);
         Task<List<TeacherDTO>> GetTeacherByEmail(string Email);
         Task<List<TeacherDTO>> SearchTeacher(string Name);
+        Task<TeacherSalary> GetSalaryOfTeacher( string TeacherId);
     }
 }

@@ -21,6 +21,6 @@ namespace Course_Signup_System.Entities
         [ForeignKey("GradeTypeId")]
         public GradeType GradeType { get; set; } = null!;
 
-        public ICollection<GradeColumn> GradeColumns { get; set; } = new List<GradeColumn>();
+        public ICollection<GradeColumn> GradeColumn { get; set; } = new List<GradeColumn>();
     }
 }

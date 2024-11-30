@@ -26,7 +26,8 @@ namespace Course_Signup_System.Data
         public DbSet<GradeColumn> GradeColumns { get; set; } = null!;
         public DbSet<PayTuition> PayTuitions { get; set; } = null!;
         public DbSet<TuitionType> TuitionTypes { get; set; } = null!;
-
+        public DbSet<Grade> Grades { get; set; } = null!;
+        public DbSet<EmployeeSalary> EmployeeSalaries { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Teacher>().ToTable("Teachers");
@@ -45,6 +46,7 @@ namespace Course_Signup_System.Data
                      .HasOne(sc => sc.Subject) // SubjectClass has one Subject
                     .WithMany()  // Assuming that the relationship is one-to-many
                     .HasForeignKey(sc => sc.SubjectId)
+                      .OnDelete(DeleteBehavior.Cascade)
                     .OnDelete(DeleteBehavior.NoAction);  // Disable cascade delete for this relationship
             modelBuilder.Entity<TeachSchedule>()
                     .HasOne(ts => ts.Subject) // SubjectClass has one Subject

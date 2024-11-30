@@ -100,9 +100,9 @@ namespace Course_Signup_System.Repositories
             return new ServiceResponse(true, "update success");
         }
 
-        public async Task<List<StudentClassDTO>> GetStudentByPay(bool status)
+        public async Task<List<StudentClassDTO>> GetStudentByStatus(bool status)
         {
-            var studentClass = await _courseSystemDB.StudentClasses.Where(st => st.Status == true)
+            var studentClass = await _courseSystemDB.StudentClasses.Where(st => st.Status == status)
                                                      .Select(st => new StudentClassDTO
                                                     {
                                                         Name = st.Student.LastName + " " + st.Student.FirstName,
@@ -118,22 +118,23 @@ namespace Course_Signup_System.Repositories
             return _mapper.Map<List<StudentClassDTO>>(studentClass);
         }
 
-        public async Task<List<StudentClassDTO>> GetStudentNoPay(bool status)
+        public async Task<ServiceResponse> CheckPayTuition(string StudentId, string ClassId)
         {
-            var studentClass = await _courseSystemDB.StudentClasses.Where(st => st.Status == false)
-                                            .Select(st => new StudentClassDTO
-                                            {
-                                                 Name = st.Student.LastName + " " + st.Student.FirstName,
-                                                ClassName = st.Class.ClassName,
-                                                UserId = st.UserId,
-                                                ClassId = st.ClassId,
-                                                Status = st.Status
-                                            }).ToListAsync();
+          var studentClass = await _courseSystemDB.StudentClasses    
+                                            .FirstOrDefaultAsync(sc =>sc.UserId ==StudentId && sc.ClassId == ClassId);
             if (studentClass == null)
             {
-                throw new ArgumentNullException("Student is null");
+                return new ServiceResponse(false, "Student is null");
             }
-            return _mapper.Map<List<StudentClassDTO>>(studentClass);
+            if (studentClass.Status == false)
+            {
+                return new ServiceResponse(false, "Student has not paid tuition for this class.");
+            }
+            else
+            {
+                return new ServiceResponse(true, "Student has registered and paid tuition.");
+            }
+
         }
     }
 }

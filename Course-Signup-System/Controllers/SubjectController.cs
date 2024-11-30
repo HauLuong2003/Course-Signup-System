@@ -2,6 +2,7 @@
 using Course_Signup_System.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace Course_Signup_System.Controllers
 {
@@ -78,6 +79,32 @@ namespace Course_Signup_System.Controllers
             try
             {
                 var subject = await _subjectService.UpdateSubject(subjectDTO);
+                return Ok(subject);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        [HttpGet("{name}")]
+        public async Task<IActionResult> GetSubjectByName(string name)
+        {
+            try
+            {
+                var subject = await _subjectService.SearchSubjectByName(name);
+                return Ok(subject);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        [HttpGet("Department-Faculty")]
+        public async Task<IActionResult> GetSubjectByFaculty([FromQuery]int DepartmentId, [FromQuery] string FacultyId)
+        {
+            try
+            {
+                var subject = await _subjectService.SearchSubject(DepartmentId,FacultyId);
                 return Ok(subject);
             }
             catch (Exception ex)

@@ -118,17 +118,22 @@ namespace Course_Signup_System.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeSalaryId"), 1L, 1);
 
-                    b.Property<double>("Allowance")
+                    b.Property<double?>("Allowance")
                         .HasColumnType("float");
 
-                    b.Property<double>("AllowanceName")
-                        .HasColumnType("float");
+                    b.Property<string>("AllowanceName")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsClose")
                         .HasColumnType("bit");
 
                     b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<double>("Salary")
                         .HasColumnType("float");
@@ -139,6 +144,9 @@ namespace Course_Signup_System.Migrations
                     b.Property<string>("TeacherUserId")
                         .HasColumnType("nvarchar(13)");
 
+                    b.Property<double>("TotalSalary")
+                        .HasColumnType("float");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -147,7 +155,7 @@ namespace Course_Signup_System.Migrations
 
                     b.HasIndex("TeacherUserId");
 
-                    b.ToTable("EmployeeSalary");
+                    b.ToTable("EmployeeSalaries");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.Faculty", b =>
@@ -199,7 +207,7 @@ namespace Course_Signup_System.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Grade");
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.GradeColumn", b =>
@@ -256,6 +264,9 @@ namespace Course_Signup_System.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<double>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("EffectiveChargeRate")
                         .HasColumnType("float");
 
                     b.Property<string>("Note")
@@ -618,13 +629,7 @@ namespace Course_Signup_System.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
-                    b.Property<string>("MainTeachingSubject")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<string>("PartTimeSubject")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -636,6 +641,10 @@ namespace Course_Signup_System.Migrations
                     b.Property<string>("Sex")
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
+
+                    b.Property<string>("SubjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("TaxCode")
                         .IsRequired()
@@ -649,6 +658,8 @@ namespace Course_Signup_System.Migrations
                     b.HasIndex("PhoneNumber")
                         .IsUnique()
                         .HasFilter("[PhoneNumber] IS NOT NULL");
+
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("Teachers", (string)null);
                 });
@@ -879,11 +890,19 @@ namespace Course_Signup_System.Migrations
 
             modelBuilder.Entity("Course_Signup_System.Entities.Teacher", b =>
                 {
+                    b.HasOne("Course_Signup_System.Entities.Subject", "Subject")
+                        .WithMany("Teachers")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Course_Signup_System.Entities.User", null)
                         .WithOne()
                         .HasForeignKey("Course_Signup_System.Entities.Teacher", "UserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
+
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.Class", b =>
@@ -943,6 +962,8 @@ namespace Course_Signup_System.Migrations
                     b.Navigation("SubjectGradeTypes");
 
                     b.Navigation("TeachSchedules");
+
+                    b.Navigation("Teachers");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.TuitionType", b =>

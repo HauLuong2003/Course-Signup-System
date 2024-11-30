@@ -10,7 +10,8 @@ namespace Course_Signup_System.Services
         Task<PageResult<StudentClassDTO>> GetStudentClasses(int page, int pagesize);
         Task<ServiceResponse> DeleteStudentClass(int StudentClassId);
         Task<StudentClassDTO> GetStudentClassById(int StudentClassId);
-        Task<List<StudentClassDTO>> GetStudentByPay(bool status);
-        Task<List<StudentClassDTO>> GetStudentNoPay(bool status);
+        Task<List<StudentClassDTO>> GetStudentByStatus(bool status);
+        Task<ServiceResponse> CheckPayTuition(string StudentId, string ClassId);
+        
     }
 }

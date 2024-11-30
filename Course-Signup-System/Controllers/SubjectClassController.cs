@@ -28,7 +28,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
-        [HttpGet("{page}/{pagesize}")]
+        [HttpGet]
         public async Task<IActionResult> GetSubjectClass([FromQuery]int page, [FromQuery] int pagesize)
         {
             try

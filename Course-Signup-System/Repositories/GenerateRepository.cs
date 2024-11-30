@@ -1,15 +1,22 @@
 ﻿using Course_Signup_System.Data;
+using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Course_Signup_System.Repositories
 {
     public class GenerateRepository : GenerateService
     {
         private readonly CourseSystemDB _dbContext;
-        public GenerateRepository(CourseSystemDB dbContext)
+        private readonly IConfiguration _configuration;
+        public GenerateRepository(CourseSystemDB dbContext, IConfiguration configuration)
         {
             _dbContext = dbContext;
+            _configuration = configuration;
         }
         public async Task<string> GenerateCodeAsync()
         {
@@ -29,6 +36,22 @@ namespace Course_Signup_System.Repositories
                 nextNumber = lastNumber + 1;
             }
             return $"{prefix}-{nextNumber.ToString("D6")}";
+        }
+
+        public async Task<string> GenerateJwtToken(User user)
+        {
+            var role = await _dbContext.Users.Include(u => u.Role).Where(u =>u.UserId == user.UserId).FirstOrDefaultAsync();
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Role, role!.Role.RoleName),
+                new Claim(ClaimTypes.NameIdentifier,user.UserId)
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSetting:Token").Value));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            var token = new JwtSecurityToken(claims: claims,
+                            signingCredentials: credentials,
+                            expires: DateTime.Now.AddMinutes(30));
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
