@@ -5,6 +5,7 @@ using Course_Signup_System.DTO.Reponse;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace Course_Signup_System.Repositories
 {
@@ -172,9 +173,28 @@ namespace Course_Signup_System.Repositories
        }).FirstOrDefault()!; // Chỉ lấy phần tử đầu tiên
 
         }
+
+        public async Task<GradeDTO> GetGradeByGradeType(int GradeTypeId, string studentId)
+        {
+            var grade = await _db.Grades
+                                 .Include(g => g.GradeType)
+                                 .Include(g => g.Subject)
+                                 .Include(g => g.Student)
+                                 .Include(g => g.GradeColumn)
+                                 .FirstOrDefaultAsync(g => g.UserId == studentId && g.GradeTypeId == GradeTypeId);
+            if(grade == null)
+            {
+                throw new Exception("student don't grade");
+            }
+           return new GradeDTO
+            {
+                GradeId = grade.GradeId,
+                SubjectId = grade.SubjectId,
+                GradeTypeId = grade.GradeTypeId,
+                UserId = grade.UserId,
+                AverageScore = grade.GradeColumn.Any() ? grade.GradeColumn.Average(g => g.Score) : 0
+            };
+        }
     }
-
-
-
- }
+}
 

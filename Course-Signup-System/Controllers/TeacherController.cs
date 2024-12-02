@@ -57,7 +57,7 @@ namespace Course_Signup_System.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
         }
         [HttpDelete("{Id}")]

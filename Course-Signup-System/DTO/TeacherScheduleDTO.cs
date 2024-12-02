@@ -1,13 +1,16 @@
-﻿using Course_Signup_System.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿
 
 namespace Course_Signup_System.DTO
 {
     public class TeacherScheduleDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
-        public TimeOnly StudyTime { get; set; }
+        public TimeSpan StudyTime { get; set; }
+
+        public TimeSpan StudyTimeEnd { get; set; }
+
+        public string ClassRoom { get; set; } = null!;
 
         public DayOfWeek StudyDay { get; set; }
 

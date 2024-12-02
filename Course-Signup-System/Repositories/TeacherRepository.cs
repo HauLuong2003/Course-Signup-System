@@ -29,7 +29,7 @@ namespace Course_Signup_System.Repositories
             teacher.PasswordSalt = PasswordSalt;            
             teacher.CreateAt = DateTime.Now;
             teacher.UpdateAt = DateTime.Now;
-            _courseSystemDB.Teachers.Add(teacher);
+            await  _courseSystemDB.Teachers.AddAsync(teacher);
             await _courseSystemDB.SaveChangesAsync();
             return _mapper.Map<TeacherDTO>(teacher);
         }
@@ -126,7 +126,11 @@ namespace Course_Signup_System.Repositories
             var classInfo = await _courseSystemDB.TeachSchedules.Include(ts => ts.Class)
                                         .Include(ts => ts.Class.StudentClasses)
                                        .Where(c => c.UserId == TeacherId)                                      
-                                       .FirstOrDefaultAsync();                       
+                                       .FirstOrDefaultAsync();   
+            if (classInfo == null)
+            {
+                throw new Exception("teacher  don't teach class");
+            }
             // Tổng học phí = học phí mỗi học sinh * số lượng học sinh
             var count  = classInfo!.Class.StudentClasses.Count();
             var totalReneve = classInfo.Class.Tuition * count;

@@ -97,5 +97,7 @@ namespace Course_Signup_System.Repositories
             Class.SubjectClasses = cl.SubjectClasses;      
             return new ServiceResponse(true,"update success");
         }
+
+
     }
 }

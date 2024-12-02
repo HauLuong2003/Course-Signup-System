@@ -75,3 +75,6 @@ D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Microso
 D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Scrutor.dll
 D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
 D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\MailKit.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\MimeKit.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\BouncyCastle.Crypto.dll

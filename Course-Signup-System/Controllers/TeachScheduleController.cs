@@ -29,7 +29,7 @@ namespace Course_Signup_System.Controllers
             }
         }
         [HttpGet]
-        public async Task<IActionResult> GetTeachSchedule([FromQuery] int page, [FromQuery] int pagesize)
+        public async Task<IActionResult> GetTeachSchedule([FromQuery] int page = 1, [FromQuery] int pagesize = 10)
         {
             try
             {

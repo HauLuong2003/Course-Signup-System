@@ -9,8 +9,13 @@ namespace Course_Signup_System.Entities
         [Key]
         public int Id { get; set; }
 
-        public TimeOnly StudyTime { get; set; }
-        
+        public TimeSpan StudyTime { get; set; }
+
+        public TimeSpan StudyTimeEnd { get; set; }
+
+       // [StringLength(50)]
+        public string ClassRoom { get; set; } = null!;
+
         public DayOfWeek StudyDay { get; set; } 
 
         public DateTime StartTime { get; set; }

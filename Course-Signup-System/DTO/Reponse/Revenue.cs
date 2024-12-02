@@ -1,10 +1,10 @@
-﻿namespace Course_Signup_System.Entities
+﻿namespace Course_Signup_System.DTO.Reponse
 {
     public class Revenue
     {
         public int RevenueId { get; set; }
 
-        public double TotalStudent { get; set; } 
+        public double TotalStudent { get; set; }
 
         public double Tuition { get; set; }
 

@@ -24,6 +24,7 @@ namespace Course_Signup_System
             // Add services to the container.
 
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -31,13 +32,15 @@ namespace Course_Signup_System
             builder.Services.AddDbContext<CourseSystemDB>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default")?? throw new InvalidOperationException("connection string not fouind"));
+
              });
             builder.Services.AddControllers()
            .AddJsonOptions(options =>
            {
                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+
            });
-           
+
 
             builder.Services.AddSwaggerGen(options =>
             {
@@ -69,7 +72,7 @@ namespace Course_Signup_System
             builder.Services.AddScoped<IRoleService, RoleRepository>();
             builder.Services.AddScoped<IStudentService, StudentRepository>();
             builder.Services.AddScoped<ITeacherService, TeacherRepository>();
-            builder.Services.AddScoped<GenerateService,GenerateRepository>();
+            builder.Services.AddScoped<IGenerateService,GenerateRepository>();
             builder.Services.AddScoped<IAuthService,AuthRepository>();
             builder.Services.AddScoped<IClassOfService, ClassOfRepository>();
             builder.Services.AddScoped<IClassService, ClassRepository>();
@@ -88,6 +91,7 @@ namespace Course_Signup_System
             builder.Services.AddScoped<IGradeColumnService, GradeColumnRepository>();
             builder.Services.AddScoped<ISchoolHolidayScheduleService, SchoolHolidayScheduleRepository>();
             builder.Services.AddScoped<IEmployeeSalaryService,EmployeeSalaryRepository>();
+            builder.Services.AddScoped<IPermissionService, PermissionRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -73,7 +73,15 @@ namespace Course_Signup_System.Repositories
                 return new ServiceResponse(false, "teach schedule is null");
             }
             var shedule = _mapper.Map<TeachSchedule>(TeacherScheduleDTO);
-            _courseSystemDB.TeachSchedules.Update(shedule);
+            teachSchedule.StudyDay = shedule.StudyDay;
+            teachSchedule.StudyTime = shedule.StudyTime;
+            teachSchedule. StudyTimeEnd = shedule.StudyTimeEnd;
+            teachSchedule.ClassRoom = shedule.ClassRoom;
+            teachSchedule.StartTime = shedule.StartTime;
+            teachSchedule.EndTime = shedule.EndTime;
+            teachSchedule.ClassId = teachSchedule.ClassId;
+            teachSchedule.UserId = teachSchedule.UserId;
+            teachSchedule.SubjectId = teachSchedule.SubjectId;  
             return new ServiceResponse(true, "update success");
         }
     }

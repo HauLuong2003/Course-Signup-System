@@ -26,6 +26,8 @@ namespace Course_Signup_System.Entities
 
         [StringLength(255)]
         public string? Avatar {  get; set; }
+        [StringLength(6)]
+        public string? VerificationCode { get; set; } = null!;
 
         public DateTime? CreateAt { get; set; }
 

@@ -293,6 +293,24 @@ namespace Course_Signup_System.Migrations
                     b.ToTable("PayTuitions");
                 });
 
+            modelBuilder.Entity("Course_Signup_System.Entities.Permission", b =>
+                {
+                    b.Property<int>("PermissionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PermissionId"), 1L, 1);
+
+                    b.Property<string>("PermissionName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("PermissionId");
+
+                    b.ToTable("Permissions");
+                });
+
             modelBuilder.Entity("Course_Signup_System.Entities.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -309,6 +327,29 @@ namespace Course_Signup_System.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("Course_Signup_System.Entities.RolePermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RolePermissions");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.SchoolHolidaySchedule", b =>
@@ -479,6 +520,10 @@ namespace Course_Signup_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("ClassRoom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
@@ -488,9 +533,11 @@ namespace Course_Signup_System.Migrations
                     b.Property<int>("StudyDay")
                         .HasColumnType("int");
 
-                    b.Property<string>("StudyTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<TimeSpan>("StudyTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("StudyTimeEnd")
+                        .HasColumnType("time");
 
                     b.Property<string>("SubjectId")
                         .IsRequired()
@@ -571,6 +618,10 @@ namespace Course_Signup_System.Migrations
 
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("VerificationCode")
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
 
                     b.HasKey("UserId");
 
@@ -722,7 +773,7 @@ namespace Course_Signup_System.Migrations
             modelBuilder.Entity("Course_Signup_System.Entities.GradeColumn", b =>
                 {
                     b.HasOne("Course_Signup_System.Entities.Grade", "Grade")
-                        .WithMany("GradeColumns")
+                        .WithMany("GradeColumn")
                         .HasForeignKey("GradeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -747,6 +798,25 @@ namespace Course_Signup_System.Migrations
                     b.Navigation("StudentClass");
 
                     b.Navigation("TuitionType");
+                });
+
+            modelBuilder.Entity("Course_Signup_System.Entities.RolePermission", b =>
+                {
+                    b.HasOne("Course_Signup_System.Entities.Permission", "Permission")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Course_Signup_System.Entities.Role", "Role")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.StudentClass", b =>
@@ -935,7 +1005,7 @@ namespace Course_Signup_System.Migrations
 
             modelBuilder.Entity("Course_Signup_System.Entities.Grade", b =>
                 {
-                    b.Navigation("GradeColumns");
+                    b.Navigation("GradeColumn");
                 });
 
             modelBuilder.Entity("Course_Signup_System.Entities.GradeType", b =>
@@ -945,8 +1015,15 @@ namespace Course_Signup_System.Migrations
                     b.Navigation("SubjectGradeType");
                 });
 
+            modelBuilder.Entity("Course_Signup_System.Entities.Permission", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
             modelBuilder.Entity("Course_Signup_System.Entities.Role", b =>
                 {
+                    b.Navigation("RolePermissions");
+
                     b.Navigation("Users");
                 });
 

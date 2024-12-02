@@ -15,7 +15,7 @@ namespace Course_Signup_System.DTO
         public string? Address { get; set; }
 
         [Required]
-        public string MainTeachingSubject { get; set; } = null!;
+        public string SubjectId { get; set; } = null!;
 
         [Required, StringLength(255)]
         public string PartTimeSubject { get; set; } = null!;

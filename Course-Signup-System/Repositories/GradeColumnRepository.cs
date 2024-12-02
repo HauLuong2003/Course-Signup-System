@@ -29,16 +29,15 @@ namespace Course_Signup_System.Repositories
             {
                 throw new Exception("subjectGrade is null");
             }
-            else if (subjectGrade.MandatoryColumnGrade >= gradeColumn || subjectGrade.GradeColumn >= gradeColumn)
+            else if (subjectGrade.MandatoryColumnGrade > gradeColumn || subjectGrade.GradeColumn > gradeColumn)
             {
                 _courseSystemDB.GradeColumns.Add(grade);
                 await _courseSystemDB.SaveChangesAsync();
             }
-            else if (subjectGrade.GradeColumn <= gradeColumn)
+            else 
             {
                 throw new Exception("the spot has darkened");
             }
-            
             return _mapper.Map<GradeColumnDTO>(grade);
         }
 

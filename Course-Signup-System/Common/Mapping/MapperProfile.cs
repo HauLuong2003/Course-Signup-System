@@ -54,6 +54,10 @@ namespace Course_Signup_System.Common.Mapping
                 .ForMember(dest=>dest.SubjectName, opt => opt.MapFrom(src => src.Subject.SubjectName))
                 .ForMember(dest => dest.ClassOfName, opt => opt.MapFrom(src => src.ClassOf.ClassOfName));
             CreateMap<SubjectGradeTypeDTO, SubjectGradeType>();
+            CreateMap<PermissionDTO, Permission>();
+            CreateMap<Permission, PermissionDTO>();
+            CreateMap<RolePermissionDTO, RolePermission>();
+            CreateMap<RolePermission, RolePermissionDTO>();
         }
     }
 }

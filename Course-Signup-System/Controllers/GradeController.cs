@@ -82,14 +82,39 @@ namespace Course_Signup_System.Controllers
         [HttpGet("GetAcademicTranscript")]
         public async Task<IActionResult> GetAcademicTranscript()
         {
-            var grade = await _gradeService.GetAcademicTranscript();
-            return Ok(grade);
+            try { 
+                var grade = await _gradeService.GetAcademicTranscript();
+                return Ok(grade);
+            }catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
         [HttpGet("Get-AcademicTranscriptByStudent")]
         public async Task<IActionResult> GetAcademicTranscriptByStudent(string StudentId)
         {
-            var grade = await _gradeService. GetAcademicTranscriptByStudent(StudentId);
-            return Ok(grade);
+            try
+            {
+                var grade = await _gradeService.GetAcademicTranscriptByStudent(StudentId);
+                return Ok(grade);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        [HttpGet("GetGradeByGradeType")]
+        public async Task<IActionResult> GetGradeByGradeType( int GradeTypeId, string StudentId)
+        {
+            try
+            {
+                var grade = await _gradeService.GetGradeByGradeType(GradeTypeId, StudentId);
+                return Ok(grade);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

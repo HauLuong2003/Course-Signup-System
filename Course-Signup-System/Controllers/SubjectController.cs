@@ -16,7 +16,7 @@ namespace Course_Signup_System.Controllers
             _subjectService = subjectService;
         }
         [HttpGet]
-        public async Task<IActionResult> GetSubject(int page =1, int pagesize =10)
+        public async Task<IActionResult> GetSubject([FromQuery]int page =1, [FromQuery] int pagesize =10)
         {
             try
             {

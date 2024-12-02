@@ -11,10 +11,10 @@ namespace Course_Signup_System.Repositories
     public class StudentRepository : IStudentService
     {
         private readonly CourseSystemDB _courseSystemDB;
-        private readonly GenerateService _generateService;
+        private readonly IGenerateService _generateService;
         private readonly IMapper _mapper;
         private readonly IHashPasword _hashPasword;
-        public StudentRepository(CourseSystemDB courseSystemDB, GenerateService generateService, IMapper mapper, IHashPasword hashPasword)
+        public StudentRepository(CourseSystemDB courseSystemDB, IGenerateService generateService, IMapper mapper, IHashPasword hashPasword)
         {
             _courseSystemDB = courseSystemDB;
             _generateService = generateService;

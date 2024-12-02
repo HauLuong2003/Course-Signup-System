@@ -11,5 +11,6 @@ namespace Course_Signup_System.Services
         Task<ClassDTO> GetClassById(string ClassId);
         Task<ServiceResponse> UpdateClass(ClassDTO ClassDTO);
         Task<List<ClassDTO>> SearchClass(string name);
+
     }
 }

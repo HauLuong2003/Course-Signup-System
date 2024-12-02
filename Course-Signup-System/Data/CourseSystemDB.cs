@@ -28,6 +28,8 @@ namespace Course_Signup_System.Data
         public DbSet<TuitionType> TuitionTypes { get; set; } = null!;
         public DbSet<Grade> Grades { get; set; } = null!;
         public DbSet<EmployeeSalary> EmployeeSalaries { get; set; } = null!;
+        public DbSet<Permission> Permissions { get; set; } = null!;
+        public DbSet<RolePermission> RolePermissions { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Teacher>().ToTable("Teachers");
@@ -37,33 +39,26 @@ namespace Course_Signup_System.Data
             modelBuilder.Entity<Student>().HasIndex(s => s.PhoneNumber).IsUnique();
             modelBuilder.Entity<Teacher>().HasIndex(t=>t.IdentityCard ).IsUnique();
 
-            modelBuilder.Entity<TeachSchedule>()
-                     .Property(t => t.StudyTime)
-                     .HasConversion(
-                     v => v.ToString(),  // Convert TimeOnly to string
-                     v => TimeOnly.Parse(v));  // Convert string back to TimeOnly
             modelBuilder.Entity<SubjectClass>()
-                     .HasOne(sc => sc.Subject) // SubjectClass has one Subject
-                    .WithMany()  // Assuming that the relationship is one-to-many
-                    .HasForeignKey(sc => sc.SubjectId)
-                      .OnDelete(DeleteBehavior.Cascade)
-                    .OnDelete(DeleteBehavior.NoAction);  // Disable cascade delete for this relationship
+                     .HasOne(sc => sc.Subject) 
+                    .WithMany() 
+                    .HasForeignKey(sc => sc.SubjectId)                    
+                    .OnDelete(DeleteBehavior.NoAction); 
             modelBuilder.Entity<TeachSchedule>()
-                    .HasOne(ts => ts.Subject) // SubjectClass has one Subject
-                   .WithMany()  // Assuming that the relationship is one-to-many
-                   .HasForeignKey(ts => ts.SubjectId);  // Disable cascade delete for this relationship
+                    .HasOne(ts => ts.Subject) 
+                   .WithMany()  
+                   .HasForeignKey(ts => ts.SubjectId); 
             modelBuilder.Entity<TeachSchedule>()
                 .HasOne(ts => ts.Subject)               // Mỗi TeachSchedule có một Subject
                 .WithMany(s => s.TeachSchedules)        // Mỗi Subject có nhiều TeachSchedules
-                .HasForeignKey(ts => ts.SubjectId)      // Khóa ngoại trong TeachSchedule là SubjectId
-                .OnDelete(DeleteBehavior.Cascade)
+                .HasForeignKey(ts => ts.SubjectId)      // Khóa ngoại trong TeachSchedule là SubjectId         
                 .OnDelete(DeleteBehavior.NoAction);     // Không thực hiện xóa cascade
 
             modelBuilder.Entity<SubjectClass>()
-                .HasOne(ts => ts.Subject)               // 
+                .HasOne(ts => ts.Subject)               
                 .WithMany(s => s.SubjectClasses)        
                 .HasForeignKey(ts => ts.SubjectId)
-                .OnDelete(DeleteBehavior.NoAction);     // Không thực hiện xóa cascade
+                .OnDelete(DeleteBehavior.NoAction);     
 
         }
 

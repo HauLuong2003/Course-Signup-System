@@ -12,6 +12,6 @@ namespace Course_Signup_System.Services
         Task<GradeDTO> GetGradeById(int GradeId);
         Task<List<AcademicTranscript>> GetAcademicTranscript();
         Task<AcademicTranscript> GetAcademicTranscriptByStudent(string StudentId);
-
+        Task<GradeDTO> GetGradeByGradeType(int GradeTypeId,string studentId);
     }
 }

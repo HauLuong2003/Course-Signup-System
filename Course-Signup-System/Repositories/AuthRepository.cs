@@ -1,4 +1,5 @@
 ﻿using Course_Signup_System.Data;
+using Course_Signup_System.DTO.Reponse;
 using Course_Signup_System.DTO.Request;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
@@ -10,13 +11,33 @@ namespace Course_Signup_System.Repositories
     {
         private readonly CourseSystemDB _dbcontext;
         private readonly IHashPasword _hashPasword;
-        private readonly GenerateService _generateService;
-        public AuthRepository(CourseSystemDB dbcontext, IHashPasword hashPasword, GenerateService generateService)
+        private readonly IGenerateService _generateService;
+        public AuthRepository(CourseSystemDB dbcontext, IHashPasword hashPasword, IGenerateService generateService)
         {
             _dbcontext = dbcontext;
             _hashPasword = hashPasword;
             _generateService = generateService;
         }
+
+        public async Task<string> ForgetPassword(ForgetPassword ForgetPassword)
+        {
+            var email = await _dbcontext.Users.AnyAsync(u => u.Email == ForgetPassword.Email);
+            if (email == true)
+            {
+                var sendemail = await _generateService.SendEmail(ForgetPassword.Email);
+                if (sendemail == true)
+                {
+                    var jwt = await _generateService.GenerateVerificationToken(ForgetPassword.Email);
+                    return jwt;
+                }
+                throw new Exception($"send don't successs: {sendemail}");
+            }
+            else
+            {
+                throw new Exception("Email incorrect");
+            }
+        }
+
         public async Task<string> Login(Login login)
         {
             if (login.ConfirmTeacher == true)
