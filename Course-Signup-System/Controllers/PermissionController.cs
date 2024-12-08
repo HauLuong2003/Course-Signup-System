@@ -1,6 +1,7 @@
 ﻿using Course_Signup_System.DTO;
 using Course_Signup_System.Repositories;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace Course_Signup_System.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "PermissionAuthorize")]
     public class PermissionController : ControllerBase
     {
         private readonly IPermissionService _permissionService;
@@ -70,7 +72,7 @@ namespace Course_Signup_System.Controllers
         [HttpPut("{Id}")]
         public async Task<IActionResult>UpdatePermission(int Id, PermissionDTO permissionDTO)
         {
-            if(Id != permissionDTO.Id)
+            if(Id != permissionDTO.PermissionId)
             {
                 return BadRequest("Id don't same");
             }

@@ -1,5 +1,6 @@
 ﻿using Course_Signup_System.DTO;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace Course_Signup_System.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GradeColumnController : ControllerBase
     { 
         private readonly IGradeColumnService _gradeColumnService;
@@ -14,6 +16,7 @@ namespace Course_Signup_System.Controllers
         {
             _gradeColumnService = gradeColumnService;
         }
+        [Authorize(Policy = "WriteGradeAuthorize")]
         [HttpPost]
         public async Task<IActionResult> CreateGradeColumn(GradeColumnDTO gradeColumnDTO)
         {
@@ -27,6 +30,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "GradeAuthorize")]
         [HttpGet]
         public async Task<IActionResult> GetGradeColumn()
         {
@@ -40,6 +44,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "GradeAuthorize")]
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetGradeById(int Id)
         {
@@ -53,6 +58,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteGradeAuthorize")]
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteGrade(int Id)
         {
@@ -66,6 +72,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteGradeAuthorize")]
         [HttpPut("{Id}")]
         public async Task<IActionResult> GetGrade(int Id, GradeColumnDTO gradeColumnDTO)
         {

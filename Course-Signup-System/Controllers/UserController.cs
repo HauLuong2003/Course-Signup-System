@@ -2,6 +2,7 @@
 using Course_Signup_System.DTO;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace Course_Signup_System.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -21,13 +23,26 @@ namespace Course_Signup_System.Controllers
         public async Task<IActionResult> CreateUser([FromBody] UserDTO userDto)
         {
             try
-            {             
-                var user = await _userService.CreateUser(userDto);
-                return Ok(user);
+            {
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Thêm xóa sửa người dùng"))
+                {
+                    var user = await _userService.CreateUser(userDto);
+                    return Ok(user);
+                }
+                else
+                {
+                    return Forbid();
+
+                }
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
         }
 
@@ -36,8 +51,20 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var users = await _userService.GetUser(page,pagesize);
-                return Ok(users);
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Xem danh sách người dùng"))
+                {
+                    var users = await _userService.GetUser(page, pagesize);
+                    return Ok(users);
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (Exception ex)
             {
@@ -63,9 +90,20 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var users = await _userService.DeleteUser(Id);
-              
-                return Ok(users);
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Thêm xóa sửa người dùng"))
+                {
+                    var users = await _userService.DeleteUser(Id);
+                    return Ok(users);
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (Exception ex)
             {
@@ -81,8 +119,20 @@ namespace Course_Signup_System.Controllers
             }
             try
             {
-                var user = await _userService.UpdateUser(userDto);            
-                return Ok(user);
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Thêm xóa sửa người dùng"))
+                {
+                    var user = await _userService.UpdateUser(userDto);
+                    return Ok(user);
+                }
+                else
+                {
+                    return Forbid("không có quyền truy cập");
+                }
             }
             catch (Exception ex)
             {
@@ -94,8 +144,20 @@ namespace Course_Signup_System.Controllers
         [HttpGet("Get-UserEmail")]
         public async Task<IActionResult> GetUserbyrole(string email)
         {
-            var result = await _userService.GetUserByEmail(email);
-            return Ok(result);
+            var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+            if (userPermissions is null)
+            {
+                return Forbid();
+            }
+            else if (userPermissions.Contains("Xem danh sách người dùng"))
+            {
+                var result = await _userService.GetUserByEmail(email);
+                return Ok(result);
+            }
+            else
+            {
+                return Forbid("không có quyền truy cập");
+            }
         }
     }
 }

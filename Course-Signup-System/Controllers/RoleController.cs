@@ -2,6 +2,7 @@
 using Course_Signup_System.DTO;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace Course_Signup_System.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "PermissionAuthorize")]
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;

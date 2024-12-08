@@ -1,5 +1,6 @@
 ﻿using Course_Signup_System.DTO;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace Course_Signup_System.Controllers
         {
             _classOfService = classOfService;
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpPost]
         public async Task<IActionResult> CreateClassof([FromBody] ClassOfDTO classOfDTO)
         {
@@ -27,7 +29,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
-
+        [Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet]
         public async Task<IActionResult> GetClassof([FromQuery]int page = 1, [FromQuery] int pagesize = 10)
         {
@@ -41,6 +43,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetClassof(string Id)
         {
@@ -54,6 +57,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteClassOf(string Id)
         {
@@ -67,6 +71,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpPut("{Id}")]
         public async Task<IActionResult> DeleteClassOf(string Id,ClassOfDTO classOfDTO)
         {

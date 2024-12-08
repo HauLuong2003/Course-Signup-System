@@ -70,5 +70,45 @@ namespace Course_Signup_System.Repositories
                 }
             }
         }
+
+        public async Task<ServiceResponse> ResetPassword(ResetPassword ResetPassword)
+        {
+            var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.Email == ResetPassword.Email);
+            if (user == null)
+            {
+                throw new Exception("user don't exist");
+            }
+            else if (user.VerificationCode == null)
+            {
+                _hashPasword.CreateHashPassword(ResetPassword.Password, out string HashPassword, out string PasswordSalte);
+                user.PasswordHash = HashPassword;
+                user.PasswordSalt = PasswordSalte;
+                await _dbcontext.SaveChangesAsync();
+                return new ServiceResponse(true, "reset password success");
+            }
+            return new ServiceResponse(false, "reset password don't success");
+
+        }
+
+        public async Task<bool> VerificationToken(VerificationToken VerificationToken)
+        {
+            var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.Email == VerificationToken.Email);
+            if (user == null)
+            {
+                throw new Exception("user don't exist");
+            }
+            else if (user.VerificationCode == VerificationToken.Token)
+            {
+                user.VerificationCode = null;
+                await _dbcontext.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+
     }
 }

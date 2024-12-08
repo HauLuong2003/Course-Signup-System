@@ -57,12 +57,12 @@ namespace Course_Signup_System.Repositories
 
         public async Task<ServiceResponse> UpdatePermission(PermissionDTO PermissionDTO)
         {
-            var permission = await _dbContext.Permissions.FindAsync(PermissionDTO.Id);
+            var permission = await _dbContext.Permissions.FindAsync(PermissionDTO.PermissionId);
             if (permission == null)
             {
                 return new ServiceResponse(false, "update don't success");
             }
-            permission.PermissionName = PermissionDTO.Name;
+            permission.PermissionName = PermissionDTO.PermissionName;
             await _dbContext.SaveChangesAsync();
             return new ServiceResponse(true, "update success");
         }

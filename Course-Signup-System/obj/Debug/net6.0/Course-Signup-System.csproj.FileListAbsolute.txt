@@ -78,3 +78,9 @@ D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\Swashbu
 D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\MailKit.dll
 D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\MimeKit.dll
 D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\BouncyCastle.Crypto.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\PdfSharpCore.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\HtmlRenderer.Core.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\HtmlRenderer.PdfSharp.Core.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\SixLabors.Core.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\SixLabors.Fonts.dll
+D:\Project_C#\Course-Signup-System\Course-Signup-System\bin\Debug\net6.0\SixLabors.ImageSharp.dll

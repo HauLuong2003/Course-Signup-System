@@ -1,3 +1,9 @@
 .vs/
 
+# Bỏ qua các tệp nhị phân và build
+bin/
+obj/
+
+# Bỏ qua tệp cấu hình
+appsettings.json
 

@@ -1,4 +1,5 @@
 ﻿using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,11 @@ namespace Course_Signup_System.Controllers
     public class FileStorageController : ControllerBase
     {
         private readonly IFileStorageService _fileStorageService;
-        public FileStorageController(IFileStorageService fileStorageService)
+        private readonly IStudentService _studentService;
+        public FileStorageController(IFileStorageService fileStorageService, IStudentService studentService)
         {
-            _fileStorageService = fileStorageService;
+            _fileStorageService = fileStorageService;   
+            _studentService = studentService;
         }
         [HttpPost]
         public async Task<IActionResult> FileStorage(IFormFile file)
@@ -34,6 +37,40 @@ namespace Course_Signup_System.Controllers
             {
                 return BadRequest(ex);
             }
+        }
+        [Authorize]
+        [HttpPost("Invoice")]
+        public async Task<IActionResult> GeneratePDF(string Id)
+        {
+            var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+            if (userPermissions is null)
+            {
+                return Forbid();
+            }
+            else if (userPermissions.Contains("Xuất báo cáo"))
+            {
+                var pdf = await _fileStorageService.GeneratePDF(Id);
+                var student = await _studentService.GetStudentById(Id);
+                var filename = student.LastName + student.FirstName + ".pdf";
+                return File(pdf, "application/pdf", filename);
+            }
+            return Forbid();
+        }
+        [Authorize]
+        [HttpPost("Report")]
+        public async Task<IActionResult> GetReport(DateTime dateTime)
+        {
+            var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+            if (userPermissions is null)
+            {
+                return Forbid();
+            }
+            else if (userPermissions.Contains("Xuất báo cáo"))
+            {
+                var report = await _fileStorageService.GenerateRevenue(dateTime);
+                return File(report, "application/pdf", dateTime + ".pdf");
+            }
+            return Forbid();
         }
     }
 }

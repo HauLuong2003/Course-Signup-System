@@ -1,5 +1,6 @@
 ﻿using Course_Signup_System.DTO;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Xml.Linq;
@@ -8,6 +9,7 @@ namespace Course_Signup_System.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class SubjectController : ControllerBase
     {
         private readonly ISubjectService _subjectService;
@@ -15,6 +17,7 @@ namespace Course_Signup_System.Controllers
         {
             _subjectService = subjectService;
         }
+        [Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet]
         public async Task<IActionResult> GetSubject([FromQuery]int page =1, [FromQuery] int pagesize =10)
         {
@@ -29,6 +32,7 @@ namespace Course_Signup_System.Controllers
             }
 
         }
+        [Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetSubjectById(string Id)
         {
@@ -43,6 +47,7 @@ namespace Course_Signup_System.Controllers
             }
 
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpPost]
         public async Task<IActionResult> CreateSubject(SubjectDTO subjectDTO)
         {
@@ -56,6 +61,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteSubject(string Id)
         {
@@ -69,6 +75,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpPut("{Id}")]
         public async Task<IActionResult> UpdateSubject(string Id,SubjectDTO subjectDTO)
         {
@@ -86,6 +93,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet("{name}")]
         public async Task<IActionResult> GetSubjectByName(string name)
         {
@@ -99,6 +107,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet("Department-Faculty")]
         public async Task<IActionResult> GetSubjectByFaculty([FromQuery]int DepartmentId, [FromQuery] string FacultyId)
         {

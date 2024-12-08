@@ -1,5 +1,6 @@
 ﻿using Course_Signup_System.DTO;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace Course_Signup_System.Controllers
         {
             _tuitionTypeService = tuitionTypeService;
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpPost]
         public async Task<IActionResult> CreateTuitionType(TuitionTypeDTO tuitionTypeDTO)
         {
@@ -27,6 +29,8 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "ReadTrainingManagement")]
+
         [HttpGet]
         public async Task<IActionResult> GetTuitionType()
         {
@@ -40,6 +44,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetTuitionTypeById(int Id)
         {
@@ -53,6 +58,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteTuitionType(int Id)
         {
@@ -66,6 +72,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpPut("{Id}")]
         public async Task<IActionResult> UpdateTuitionType(int Id,TuitionTypeDTO tuitionTypeDTO)
         {

@@ -1,5 +1,6 @@
 ﻿using Course_Signup_System.DTO;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace Course_Signup_System.Controllers
         {
             _facultyService = faultyService;
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpPost]
         public async Task<IActionResult> CreateFaculty([FromBody]FacultyDTO facultyDTO)
         {
@@ -27,7 +29,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
-
+        [Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetFacultybyId(string Id)
         {
@@ -41,6 +43,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpPut("{Id}")]
         public async Task<IActionResult> UpdateFaculty(string Id,FacultyDTO facultyDTO)
         {
@@ -58,6 +61,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet]
         public async Task<IActionResult> GetAllFaculty([FromQuery] int page = 1, [FromQuery] int pagesize =10)
         {
@@ -71,6 +75,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Authorize(Policy = "WriteTrainingManagement")]
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteFaculty(string Id)
         {

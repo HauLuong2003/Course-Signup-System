@@ -2,6 +2,7 @@
 using Course_Signup_System.DTO;
 using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace Course_Signup_System.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TeacherController : ControllerBase
     {
         private readonly ITeacherService _teacherService;
@@ -24,9 +26,21 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var teachers = await _teacherService.GetAllTeachers(page, pagesize);
-               
-                return Ok(teachers);
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Xem tất cả danh sách giảng viên"))
+                {
+                    var teachers = await _teacherService.GetAllTeachers(page, pagesize);
+
+                    return Ok(teachers);
+                }
+                else
+                {
+                    return Forbid("khong co quyen");
+                }
             }
             catch (Exception ex)
             {
@@ -38,9 +52,21 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var teacher = await _teacherService.GetTeacherById(Id);
-                
-                return Ok(teacher);
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Xem tất cả danh sách giảng viên"))
+                {
+                    var teacher = await _teacherService.GetTeacherById(Id);
+
+                    return Ok(teacher);
+                }
+                else
+                {
+                    return Forbid("khong co quyen truy cap");
+                }
             }
             catch (Exception ex)
             {
@@ -52,8 +78,20 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var st = await _teacherService.CreateTeacher(teacherDTO);              
-                return Ok(st);
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Thêm xóa sửa giảng viên"))
+                {
+                    var st = await _teacherService.CreateTeacher(teacherDTO);
+                    return Ok(st);
+                }
+                else
+                {
+                    return Forbid("khong co quyen truy cap");
+                }
             }
             catch (Exception ex)
             {
@@ -65,8 +103,20 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var teacher = await _teacherService.DeleteTeacher(Id);
-                return Ok(teacher);
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Thêm xóa sửa giảng viên"))
+                {
+                    var teacher = await _teacherService.DeleteTeacher(Id);
+                    return Ok(teacher);
+                }
+                else
+                {
+                    return Forbid("khong co quyen");
+                }
             }
             catch (Exception ex)
             {
@@ -82,9 +132,20 @@ namespace Course_Signup_System.Controllers
             }
             try
             {
-                
-                var teacher = await _teacherService.UpdateTeacher(teacherDTO);
-                return Ok(teacher);
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Thêm xóa sửa giảng viên"))
+                {
+                    var teacher = await _teacherService.UpdateTeacher(teacherDTO);
+                    return Ok(teacher);
+                }
+                else
+                {
+                    return Forbid("khong co quyen truy cap");
+                }
             }
             catch (Exception ex)
             {
@@ -96,8 +157,20 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var teacher = await _teacherService.GetTeacherByEmail(Email);
-                return Ok(teacher);
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Xem tất cả danh sách giảng viên"))
+                {
+                    var teacher = await _teacherService.GetTeacherByEmail(Email);
+                    return Ok(teacher);
+                }
+                else
+                {
+                    return Forbid("khong co quyen truy cap");
+                }
             }
             catch(Exception ex)
             {
@@ -107,8 +180,20 @@ namespace Course_Signup_System.Controllers
         [HttpGet("search-teacher/{name}")]
         public async Task<IActionResult> Searchteachers(string name)
         {
-            var teacher = await _teacherService.SearchTeacher(name);
-            return Ok(teacher);
+            var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+            if (userPermissions is null)
+            {
+                return Forbid();
+            }
+            else if (userPermissions.Contains("Xem tất cả danh sách giảng viên"))
+            {
+                var teacher = await _teacherService.SearchTeacher(name);
+                return Ok(teacher);
+            }
+            else
+            {
+                return Forbid("Khong co quyen truy cap");
+            }
         }
 
         [HttpGet("GetSalaryTeacher")]
@@ -116,8 +201,20 @@ namespace Course_Signup_System.Controllers
         {
             try
             {
-                var teacher = await _teacherService.GetSalaryOfTeacher(Id);
-                return Ok(teacher);
+                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                if (userPermissions is null)
+                {
+                    return Forbid();
+                }
+                else if (userPermissions.Contains("Xem tất cả danh sách giảng viên"))
+                {
+                    var teacher = await _teacherService.GetSalaryOfTeacher(Id);
+                    return Ok(teacher);
+                }
+                else
+                {
+                    return Forbid("khong co quyen truy cap");
+                }
             }
             catch (Exception ex)
             {

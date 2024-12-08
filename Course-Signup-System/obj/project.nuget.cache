@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "tIwquRxGHvs=",
+  "dgSpecHash": "5cIXk2p6p/A=",
   "success": true,
   "projectFilePath": "D:\\Project_C#\\Course-Signup-System\\Course-Signup-System\\Course-Signup-System.csproj",
   "expectedPackageFiles": [
@@ -44,8 +44,13 @@
     "C:\\Users\\haulu\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\haulu\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\haulu\\.nuget\\packages\\mimekit\\3.4.1\\mimekit.3.4.1.nupkg.sha512",
+    "C:\\Users\\haulu\\.nuget\\packages\\pdfsharpcore\\1.1.21\\pdfsharpcore.1.1.21.nupkg.sha512",
+    "C:\\Users\\haulu\\.nuget\\packages\\polybioz.htmlrenderer.pdfsharp.core\\1.0.0\\polybioz.htmlrenderer.pdfsharp.core.1.0.0.nupkg.sha512",
     "C:\\Users\\haulu\\.nuget\\packages\\portable.bouncycastle\\1.9.0\\portable.bouncycastle.1.9.0.nupkg.sha512",
     "C:\\Users\\haulu\\.nuget\\packages\\scrutor\\3.3.0\\scrutor.3.3.0.nupkg.sha512",
+    "C:\\Users\\haulu\\.nuget\\packages\\sixlabors.core\\1.0.0-beta0008\\sixlabors.core.1.0.0-beta0008.nupkg.sha512",
+    "C:\\Users\\haulu\\.nuget\\packages\\sixlabors.fonts\\1.0.0-beta0009\\sixlabors.fonts.1.0.0-beta0009.nupkg.sha512",
+    "C:\\Users\\haulu\\.nuget\\packages\\sixlabors.imagesharp\\1.0.0-beta0006\\sixlabors.imagesharp.1.0.0-beta0006.nupkg.sha512",
     "C:\\Users\\haulu\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
     "C:\\Users\\haulu\\.nuget\\packages\\swashbuckle.aspnetcore.filters\\7.0.0\\swashbuckle.aspnetcore.filters.7.0.0.nupkg.sha512",
     "C:\\Users\\haulu\\.nuget\\packages\\swashbuckle.aspnetcore.filters.abstractions\\7.0.0\\swashbuckle.aspnetcore.filters.abstractions.7.0.0.nupkg.sha512",

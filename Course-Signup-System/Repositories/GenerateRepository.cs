@@ -3,13 +3,18 @@ using Course_Signup_System.Entities;
 using Course_Signup_System.Services;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
+using PdfSharpCore;
+using PdfSharpCore.Pdf;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
+using Microsoft.AspNetCore.Mvc;
+using PdfSharpCore.Drawing;
 namespace Course_Signup_System.Repositories
 {
     public class GenerateRepository : IGenerateService
@@ -43,13 +48,19 @@ namespace Course_Signup_System.Repositories
 
         public async Task<string> GenerateJwtToken(User user)
         {
-            var role = await _dbContext.Users.Include(u => u.Role).Where(u =>u.UserId == user.UserId).FirstOrDefaultAsync();
+            var rolePermission = await _dbContext.Users.Include(u => u.Role).ThenInclude(u => u.RolePermissions)
+                                    .ThenInclude(u =>u.Permission)
+                                    .Where(u =>u.UserId == user.UserId).SelectMany(u => u.Role.RolePermissions.Select(rp => rp.Permission)).ToListAsync();
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Role, role!.Role.RoleName),
+                //new Claim(ClaimTypes.Role, role!.Role.RoleName),
                 new Claim(ClaimTypes.NameIdentifier,user.UserId),
                 new Claim("RoleId", user.RoleId.ToString()),
-            };
+            };            
+            foreach(var permissions in rolePermission)
+            {
+                claims.Add (new Claim("Permission",permissions.PermissionName));    
+            }
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSetting:Token").Value));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
             var token = new JwtSecurityToken(claims: claims,
@@ -112,21 +123,6 @@ namespace Course_Signup_System.Repositories
             }
         }
 
-        public async Task<bool> VerificationToken(string email, string Token)
-        {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (user == null)
-            {
-                return false;
-            }
-            else if (user.VerificationCode == Token)
-            {
-                // xác nhận đúng thì gán giá trị null vào vì sau này còn sử dụng
-                user.VerificationCode = null;
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
-            return false;
-        }
+
     }
 }

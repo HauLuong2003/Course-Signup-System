@@ -1,5 +1,6 @@
 ﻿using Course_Signup_System.DTO;
 using Course_Signup_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace Course_Signup_System.Controllers
         {
             _gradeService = gradeService;
         }
+        [Authorize(Policy = "WriteGradeAuthorize")]
         [HttpPost]
         public async Task<IActionResult> CreateGrade(GradeDTO gradeDTO)
         {
@@ -27,6 +29,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy ="GradeAuthorize")]
         [HttpGet]
         public async Task<IActionResult> GetGrade()
         {
@@ -40,6 +43,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "GradeAuthorize")]
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetGradeById(int Id)
         {
@@ -53,6 +57,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteGradeAuthorize")]
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteGrade(int Id)
         {
@@ -66,6 +71,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "WriteGradeAuthorize")]
         [HttpPut("{Id}")]
         public async Task<IActionResult> GetGrade(int Id, GradeDTO gradeDTO)
         {
@@ -79,6 +85,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "GradeAuthorize")]
         [HttpGet("GetAcademicTranscript")]
         public async Task<IActionResult> GetAcademicTranscript()
         {
@@ -90,6 +97,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "GradeAuthorize")]
         [HttpGet("Get-AcademicTranscriptByStudent")]
         public async Task<IActionResult> GetAcademicTranscriptByStudent(string StudentId)
         {
@@ -103,6 +111,7 @@ namespace Course_Signup_System.Controllers
                 return BadRequest(ex);
             }
         }
+        [Authorize(Policy = "GradeAuthorize")]
         [HttpGet("GetGradeByGradeType")]
         public async Task<IActionResult> GetGradeByGradeType( int GradeTypeId, string StudentId)
         {

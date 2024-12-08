@@ -92,6 +92,99 @@ namespace Course_Signup_System
             builder.Services.AddScoped<ISchoolHolidayScheduleService, SchoolHolidayScheduleRepository>();
             builder.Services.AddScoped<IEmployeeSalaryService,EmployeeSalaryRepository>();
             builder.Services.AddScoped<IPermissionService, PermissionRepository>();
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("VerificationToken", policy =>
+                {
+                    policy.RequireClaim("Permission", "VerificationToken");
+                });
+                options.AddPolicy("PermissionAuthorize", policy =>
+                {
+                    policy.RequireAssertion(context =>
+                    {
+                        // Lấy tất cả quyền từ claim "Permission"
+                        var userPermissions = context.User.FindAll("Permission").Select(c => c.Value).ToList();
+                        if (userPermissions.Contains("Thêm xóa sửa phân quyền người dùng"))
+                        {
+                            // Kiểm tra nếu người dùng có bất kỳ quyền nào trong danh sách
+                            return true;
+                        }
+                        return false;
+                    });
+                }); 
+                options.AddPolicy("GradeTypeAuthorize", policy =>
+                {
+                    policy.RequireAssertion(context =>
+                    {
+                        // Lấy tất cả quyền từ claim "Permission"
+                        var userPermissions = context.User.FindAll("Permission").Select(c => c.Value).ToList();
+                        if (userPermissions.Contains("Thêm xóa sửa loại điểm"))
+                        {
+                            // Kiểm tra nếu người dùng có bất kỳ quyền nào trong danh sách
+                            return true;
+                        }
+                        return false;
+                    });
+                });
+                options.AddPolicy("GradeAuthorize", policy =>
+                {
+                    policy.RequireAssertion(context =>
+                    {
+                        // Lấy tất cả quyền từ claim "Permission"
+                        var userPermissions = context.User.FindAll("Permission").Select(c => c.Value).ToList();
+                        if (userPermissions.Contains("Xem điểm"))
+                        {
+                            // Kiểm tra nếu người dùng có bất kỳ quyền nào trong danh sách
+                            return true;
+                        }
+                        return false;
+                    });
+                });
+                options.AddPolicy("WriteGradeAuthorize", policy =>
+                {
+                    policy.RequireAssertion(context =>
+                    {
+                        // Lấy tất cả quyền từ claim "Permission"
+                        var userPermissions = context.User.FindAll("Permission").Select(c => c.Value).ToList();
+                        if (userPermissions.Contains("Cập nhật điểm"))
+                        {
+                            // Kiểm tra nếu người dùng có bất kỳ quyền nào trong danh sách
+                            return true;
+                        }
+                        return false;
+                    });
+                }); 
+                options.AddPolicy("WriteTrainingManagement", policy =>
+                {
+                    policy.RequireAssertion(context =>
+                    {
+                        // Lấy tất cả quyền từ claim "Permission"
+                        var userPermissions = context.User.FindAll("Permission").Select(c => c.Value).ToList();
+                        if (userPermissions.Contains("Thêm xóa sửa quản lý đào tạo"))
+                        {
+                            // Kiểm tra nếu người dùng có bất kỳ quyền nào trong danh sách
+                            return true;
+                        }
+                        return false;
+                    });
+                });
+                options.AddPolicy("ReadTrainingManagement", policy =>
+                {
+                    policy.RequireAssertion(context =>
+                    {
+                        // Lấy tất cả quyền từ claim "Permission"
+                        var userPermissions = context.User.FindAll("Permission").Select(c => c.Value).ToList();
+                        if (userPermissions.Contains("Xem tất cả quản lý đào tạo"))
+                        {
+                            // Kiểm tra nếu người dùng có bất kỳ quyền nào trong danh sách
+                            return true;
+                        }
+                        return false;
+                    });
+                });
+            }); 
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

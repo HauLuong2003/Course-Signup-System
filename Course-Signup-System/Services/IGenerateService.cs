@@ -1,4 +1,5 @@
 ﻿using Course_Signup_System.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Course_Signup_System.Services
 {
@@ -7,7 +8,6 @@ namespace Course_Signup_System.Services
         Task<string> GenerateCodeAsync();
         Task<string> GenerateJwtToken(User user);
         Task<bool> SendEmail(string email); 
-        Task<bool> VerificationToken(string email, string Token);
         Task<string> GenerateVerificationToken (string email);
     }
 }
