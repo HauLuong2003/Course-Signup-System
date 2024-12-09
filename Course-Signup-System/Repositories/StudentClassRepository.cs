@@ -22,19 +22,33 @@ namespace Course_Signup_System.Repositories
         {
             var studentclass = _mapper.Map<StudentClass>(studentClassDTO);
             studentclass.CreateAt = DateTime.Now;
-             _courseSystemDB.StudentClasses.Add(studentclass);
-            await _courseSystemDB.SaveChangesAsync();
-            return _mapper.Map<StudentClassDTO>(studentclass);
+            var studentForClass = await _courseSystemDB.Classes.FindAsync(studentClassDTO.ClassId);
+            if (studentForClass!.NumberStudent <= studentForClass.MaxNumberStudent)
+            {
+                _courseSystemDB.StudentClasses.Add(studentclass);
+                await _courseSystemDB.SaveChangesAsync();
+                studentForClass.NumberStudent += 1;
+                await _courseSystemDB.SaveChangesAsync();
+                return _mapper.Map<StudentClassDTO>(studentclass);
+
+            }
+            else
+            {
+                throw new Exception("Class full slot");
+            }
         }
 
         public async Task<ServiceResponse> DeleteStudentClass(int StudentClassId)
         {
-            var studentclass = await _courseSystemDB.StudentClasses.FindAsync(StudentClassId);
+            var studentclass = await _courseSystemDB.StudentClasses.Include(sc => sc.Class)
+                                                         .FirstOrDefaultAsync(sc => sc.StudentClassId == StudentClassId);
             if (studentclass == null)
             {
                 return new ServiceResponse(false, "id incorrect");
             }
             _courseSystemDB.StudentClasses.Remove(studentclass);
+            await _courseSystemDB.SaveChangesAsync();
+            studentclass.Class.NumberStudent -= 1;
             await _courseSystemDB.SaveChangesAsync();
             return new ServiceResponse(true, "delete success");
         }

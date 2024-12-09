@@ -5,6 +5,7 @@
         public int PayTuitionId { get; set; }
 
         public string? Name { get; set; }
+
         public string? ClassName { get; set; }
 
         public double Tuition { get; set; } // học phí
