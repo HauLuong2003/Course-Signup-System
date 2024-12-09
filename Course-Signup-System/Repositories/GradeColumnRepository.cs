@@ -22,23 +22,25 @@ namespace Course_Signup_System.Repositories
         {
             
             var grade = _mapper.Map<GradeColumn>(GradeColumnDTO); 
-            var subjectGrade = await _courseSystemDB.SubjectGradeTypes.FirstOrDefaultAsync(g => g.SubjectId == grade.Grade.SubjectId && g.GradeTypeId == grade.Grade.GradeTypeId);
+            var subjectGrade = await _courseSystemDB.Grades.Include(s => s.Subject)
+                                                            .ThenInclude(g =>g.SubjectGradeTypes).FirstOrDefaultAsync(g => g.GradeId == GradeColumnDTO.GradeId);
             var gradeColumn = await _courseSystemDB.GradeColumns.Where(f => f.GradeId == GradeColumnDTO.GradeId).CountAsync();
 
             if (subjectGrade == null)
             {
                 throw new Exception("subjectGrade is null");
             }
-            else if (subjectGrade.MandatoryColumnGrade > gradeColumn || subjectGrade.GradeColumn > gradeColumn)
+            else if (subjectGrade.Subject.SubjectGradeTypes.Max(s=>s.GradeColumn) > gradeColumn || subjectGrade.Subject.SubjectGradeTypes.Max(s => s.MandatoryColumnGrade) > gradeColumn)
             {
                 _courseSystemDB.GradeColumns.Add(grade);
                 await _courseSystemDB.SaveChangesAsync();
+                return _mapper.Map<GradeColumnDTO>(grade);
+
             }
             else 
             {
                 throw new Exception("the spot has darkened");
             }
-            return _mapper.Map<GradeColumnDTO>(grade);
         }
 
         public async Task<ServiceResponse> DeleteGradeType(int GradeColumnId)

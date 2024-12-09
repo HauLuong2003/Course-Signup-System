@@ -8,7 +8,6 @@ namespace Course_Signup_System.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class GradeColumnController : ControllerBase
     { 
         private readonly IGradeColumnService _gradeColumnService;
@@ -16,7 +15,7 @@ namespace Course_Signup_System.Controllers
         {
             _gradeColumnService = gradeColumnService;
         }
-        [Authorize(Policy = "WriteGradeAuthorize")]
+        //[Authorize(Policy = "WriteGradeAuthorize")]
         [HttpPost]
         public async Task<IActionResult> CreateGradeColumn(GradeColumnDTO gradeColumnDTO)
         {

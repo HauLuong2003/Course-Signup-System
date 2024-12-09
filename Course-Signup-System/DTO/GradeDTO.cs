@@ -14,7 +14,7 @@ namespace Course_Signup_System.DTO
         public double? AverageScore { get; set; }
         [Required]
         public int GradeTypeId { get; set; }
-        public ICollection<GradeColumnDTO> GradeColumns { get; set; } = new List<GradeColumnDTO>();
+        //public ICollection<GradeColumnDTO> GradeColumns { get; set; } = new List<GradeColumnDTO>();
 
 
     }
