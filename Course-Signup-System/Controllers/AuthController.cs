@@ -1,4 +1,5 @@
-﻿using Course_Signup_System.DTO.Request;
+﻿using Course_Signup_System.DTO;
+using Course_Signup_System.DTO.Request;
 using Course_Signup_System.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,8 +13,10 @@ namespace Course_Signup_System.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly IStudentService _studentService;
+        public AuthController(IAuthService authService, IStudentService studentService)
         {
+            _studentService = studentService;
             _authService = authService;
         }
         [HttpPost("Login")]
@@ -37,6 +40,19 @@ namespace Course_Signup_System.Controllers
 
                 var result = await _authService.ForgetPassword(forgetPassword);
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> RegisterStudent([FromBody]StudentDTO studentDTO)
+        {
+            try
+            {
+                var student = await _studentService.CreateStudent(studentDTO);
+                return Ok(student);
             }
             catch (Exception ex)
             {

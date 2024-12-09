@@ -147,7 +147,7 @@ namespace Course_Signup_System.Repositories
             }
             int i = 0;
             var content = "<div style='text-align: center;'>";
-            content += "    <h2>BÁO CÁO NỢ HỌC PHÍ</h2>";
+            content += "    <h2>BÁO CÁO HỌC PHÍ</h2>";
             content += $"    <p>Ngày:{DateTime.Now:dd/mm,yyyy} </p>";
             content += "</div>";
 
@@ -213,6 +213,5 @@ namespace Course_Signup_System.Repositories
             }
 
         }
-
     }
 }
