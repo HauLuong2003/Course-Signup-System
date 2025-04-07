@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Course_Signup_System.DTO;
-using Course_Signup_System.Entities;
-using Course_Signup_System.Services;
+using Course_Signup_System.Application.DTO;
+using Course_Signup_System.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

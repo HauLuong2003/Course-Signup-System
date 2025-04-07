@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using Course_Signup_System.Common.Mapping;
-using Course_Signup_System.Data;
-using Course_Signup_System.Entities;
+using Course_Signup_System.Application.Common.Mapping;
+using Course_Signup_System.Infrastructure.Data;
+using Course_Signup_System.Domain.Entities;
 using Course_Signup_System.Repositories;
-using Course_Signup_System.Services;
+using Course_Signup_System.Application.Services;
+using Course_Signup_System.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,7 +32,7 @@ namespace Course_Signup_System
 
             builder.Services.AddDbContext<CourseSystemDB>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("Default")?? throw new InvalidOperationException("connection string not fouind"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Default")?? throw new InvalidOperationException("connection string not found"));
 
              });
             builder.Services.AddControllers()

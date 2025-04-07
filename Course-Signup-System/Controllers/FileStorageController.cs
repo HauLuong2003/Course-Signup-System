@@ -1,4 +1,4 @@
-﻿using Course_Signup_System.Services;
+﻿using Course_Signup_System.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

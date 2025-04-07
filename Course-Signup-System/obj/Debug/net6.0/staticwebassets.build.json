@@ -1,27 +1,27 @@
 {
   "Version": 1,
-  "Hash": "LnpqdcGO6IRlND53tCytU+b3CqkntJ14Dgh5UO0KAJU=",
-  "Source": "Course-Signup-System",
-  "BasePath": "_content/Course-Signup-System",
+  "Hash": "kSP1XWZpKKRA9QcGYEZC89GSmaWYDI7BZNRfV9VG4j8=",
+  "Source": "Course-Signup-System.API",
+  "BasePath": "_content/Course-Signup-System.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [
     {
-      "Name": "Course-Signup-System\\wwwroot",
-      "Source": "Course-Signup-System",
+      "Name": "Course-Signup-System.API\\wwwroot",
+      "Source": "Course-Signup-System.API",
       "ContentRoot": "D:\\Project_C#\\Course-Signup-System\\Course-Signup-System\\wwwroot\\",
-      "BasePath": "_content/Course-Signup-System",
+      "BasePath": "_content/Course-Signup-System.API",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
       "Identity": "D:\\Project_C#\\Course-Signup-System\\Course-Signup-System\\wwwroot\\Image\\anime-girl.jpg",
-      "SourceId": "Course-Signup-System",
+      "SourceId": "Course-Signup-System.API",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Project_C#\\Course-Signup-System\\Course-Signup-System\\wwwroot\\",
-      "BasePath": "_content/Course-Signup-System",
+      "BasePath": "_content/Course-Signup-System.API",
       "RelativePath": "Image/anime-girl.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
