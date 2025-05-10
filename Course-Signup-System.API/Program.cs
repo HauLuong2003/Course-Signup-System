@@ -201,6 +201,7 @@ namespace Course_Signup_System.API
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
+
             app.MapRazorPages();
             app.UseStaticFiles();
             app.UseBlazorFrameworkFiles();

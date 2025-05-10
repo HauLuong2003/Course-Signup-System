@@ -12,8 +12,12 @@ namespace Course_Signup_System.Application.DTO
         public string LastName { get; set; } = null!;
         [Required, EmailAddress]
         public string Email { get; set; } = null!;
-        [Required]
-        public string Password { get; set; } = null!;
+
+        public string? Password { get; set; } = null!;
+
+        public DateTime? CreateAt { get; set; }
+
+        public DateTime? UpdateAt { get; set; }
 
         public string? Avatar {  get; set; }
         [Required]

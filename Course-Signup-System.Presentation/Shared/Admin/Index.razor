@@ -1,0 +1,16 @@
+﻿@page "/"
+@inherits LayoutComponentBase
+
+<PageTitle>Student Management</PageTitle>
+
+        <p>Xin chào  @userName</p>
+
+@code{
+    private string? userName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await customAuthProvider.GetAuthenticationStateAsync();
+         userName = authState.User.Identity?.Name;
+    }
+}

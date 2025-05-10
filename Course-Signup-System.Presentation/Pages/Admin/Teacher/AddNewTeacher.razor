@@ -1,0 +1,203 @@
+﻿@page "/add-teacher"
+<!-- Main content -->
+<section class="content">
+    <EditForm Model="Teacher" OnValidSubmit="HandleSaveTeacher">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Add Teacher</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="inputName"> Họ</label>
+                            <InputText @bind-Value="Teacher.FirstName" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Tên</label>
+                            <InputText @bind-Value="Teacher.LastName" class="form-control" rows="4"></InputText>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Email">Email</label>
+                            <InputText type="email" @bind-Value="Teacher.Email" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">Mật khẩu</label>
+                            <InputText type="password" @bind-Value="Teacher.Password" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Role">Vai Trò</label>
+
+                            @if (roleList != null)
+                            {
+                                <InputSelect for="role" @bind-Value="Teacher.RoleId" class="form-control custom-select">
+                                    <option value="">Chọn</option>
+                                    @foreach (var role in roleList)
+                                    {
+                                        <option value="@role.RoleId">@role.RoleName</option>
+                                    }
+                                </InputSelect>
+                            }
+
+                        </div>
+                        <div class="form-group">
+                            <label for="cccd">CCCD</label>
+                            <InputText type="password" @bind-Value="Teacher.IdentityCard" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form label @(ImageUploadMessage == ""?"":"Text-danger")">
+                                @(ImageUploadMessage == "" ? "Avatar" : ImageUploadMessage)
+                            </label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <InputFile type="file" class="custom-file-input" OnChange="Avatar" id="image" />
+                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <div class="col-md-6">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"></h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="inputSex">Giới tính</label>
+                            <InputSelect for="Featured" @bind-Value="Teacher.Sex" class="form-control custom-select">
+                                <option value="M">Nam</option>
+                                <option value="F">Nữ</option>
+                            </InputSelect>
+                        </div>
+                        <div class="form-group">
+                            <label for="Address">Địa chỉ</label>
+                            <InputTextArea type="password" @bind-Value="Teacher.Address" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="BirthDay">Ngày sinh</label>
+                            <InputDate @bind-Value="Teacher.BirthDay" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Phone">Phone</label>
+                            <InputText @bind-Value="Teacher.PhoneNumber" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Subject">Môn dạy chính</label>
+                        <InputSelect for="role" @bind-Value="Teacher.SubjectId" class="form-control custom-select">
+                            <option value="">Chọn</option>
+                            @foreach (var subject in subjectList.Data)
+                            {
+                                <option value="@subject.SubjectId">@subject.SubjectName</option>
+                            }
+                        </InputSelect>
+                        </div>
+                        <div class="form-group">
+                            <label for="Parent">Môn khiêm dạy</label>
+                            <InputText @bind-Value="Teacher.PartTimeSubject" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Parent">Mã số thuế</label>
+                            <InputText @bind-Value="Teacher.TaxCode" class="form-control" />
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <input type="submit" value="Create new Student" class="btn btn-success float-right">
+
+                <a href="/student-list" class="btn btn-secondary">Cancel</a>
+
+            </div>
+        </div>
+    </EditForm>
+
+</section>
+@code {
+    private TeacherDTO Teacher { set; get; } = new();
+    private List<RoleDTO> roleList = new List<RoleDTO>();
+    private PageResult<SubjectDTO> subjectList = new PageResult<SubjectDTO>();
+    string ImageUploadMessage = "";
+    public int currentPage = 1;
+    public int pageSize = 20;
+
+    public IBrowserFile? file1;
+    public async Task Avatar(InputFileChangeEventArgs e)
+    {
+        file1 = e.File;
+        if (file1 != null)
+        {
+            ImageUploadMessage = "Image uploaded successfully";
+        }
+        else
+        {
+            ImageUploadMessage = "No file selected";
+        }
+    }
+    public async Task<string> SaveImageAvatar()
+    {
+        if (file1 != null)
+        {
+            using var stream = file1.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            var fileBytes = memoryStream.ToArray();
+            var response = await FileStorage.UploadFile(fileBytes, file1.Name, file1.ContentType);
+
+            return response;
+        }
+        return null!;
+    }
+    private async Task HandleSaveTeacher()
+    {
+        Teacher.Avatar = await SaveImageAvatar();
+        var (flag, message) = await teacherService.CreateTeacher(Teacher);
+        if (flag)
+        {
+            await JS.InvokeVoidAsync("alert", message);
+            Navigation.NavigateTo("/teacher-list");
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("alert", message);
+            return;
+        }
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        Teacher.BirthDay = DateTime.Now;
+        subjectList = await subjectService.GetAllSubject(currentPage,pageSize);
+        roleList = await RoleService.GetRoles();
+    }
+
+}

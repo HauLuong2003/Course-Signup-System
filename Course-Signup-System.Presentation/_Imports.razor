@@ -8,3 +8,20 @@
 @using Microsoft.JSInterop
 @using Course_Signup_System.Presentation
 @using Course_Signup_System.Presentation.Shared
+@using Course_Signup_System.Presentation.Shared.Admin
+@using Course_Signup_System.Presentation.Services
+@using Course_Signup_System.Application.Services
+@using Course_Signup_System.Application.DTO
+@using Course_Signup_System.Application.DTO.Reponse
+@using Course_Signup_System.Application.DTO.Request
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IStudentService studentSerive
+@inject IAuthService AuthService
+@inject HttpClient _httpClient
+@inject NavigationManager Navigation
+@inject CustomAuthProvider customAuthProvider
+@inject IFileStorageService FileStorage
+@inject IRoleService RoleService
+@inject ITeacherService teacherService
+@inject ISubjectService subjectService
+@inject IJSRuntime JS

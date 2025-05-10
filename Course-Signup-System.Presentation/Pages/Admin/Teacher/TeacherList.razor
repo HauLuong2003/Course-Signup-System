@@ -1,0 +1,139 @@
+﻿@page "/teacher-list"
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Teacher List</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <p><a class="btn btn-success float-end" href="/add-teacher"> Add New Teacher </a></p>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header"></div>
+                            @if (teacherList != null || teacherList.Data.Any())
+                            {
+                                <div class="card-body">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th> Name</th>
+
+                                                <th>Avatar</th>
+                                                <th>Phone</th>
+                                                <th>Sex</th>
+                                                <th>Email</th>
+                                               <th>Create </th>
+                                                <th>Update</th>
+                                                <th>Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var st in teacherList.Data)
+                                            {
+                                                <tr>
+                                                    <td>@st.UserId</td>
+                                                    <td>@(st.FirstName + " " + st.LastName)</td>
+                                                    <td>
+                                                        <img src="@st.Avatar" alt="avatar" style="max-width: 100px; max-height: 100px;" />
+                                                    </td>
+                                                    <td>@st.PhoneNumber</td>
+
+                                                    <td>@(char.ToUpper(st.Sex) == 'M' ? "Nam" : "Nữ")</td>
+
+                                                    <td>@st.Email</td>
+                                                     <td>@st.CreateAt</td>
+                                                    <td>@st.UpdateAt</td>
+                                                    <td>
+                                                        <a class="btn btn-success" href="/update-teacher/@st.UserId"> Update </a>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger" @onclick="()=>DeleteTeacher(st.UserId)"> Delete </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-footer clearfix">
+
+                                    <ul class="pagination pagination-sm m-0 float-right" Spread="2">
+                                        <li class="page-item @(currentPage == 1 ? "disable" : "")">
+                                            <button class="page-link" @onclick="() => GoToPage(currentPage - 1)">&laquo;</button>
+                                        </li>
+                                        @if (teacherList.TotalPages > 0)
+                                        {
+                                            @for (int i = 1; i <= teacherList.TotalPages; i++)
+                                            {
+                                                var pageIndex = i; // biến tạm để giữ giá trị đúng
+                                                <li class="page-item @(pageIndex  == currentPage ? "active" : "")">
+                                                    <button class="page-link" @onclick="() => GoToPage(pageIndex )">@i</button>
+
+                                                </li>
+                                            }
+                                        }
+                                        <li class="page-item @(currentPage == teacherList.TotalPages ? "disable":"")">
+                                            <button class="page-link" @onclick="() => GoToPage(currentPage + 1)">&raquo;</button>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">There are no  available.</div>
+
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    public PageResult<TeacherDTO> teacherList { set; get; } = new();
+    public int currentPage = 1;
+    public int pageSize = 10;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTeachers();
+    }
+    private async Task GoToPage(int page)
+    {
+        if (page < 1 || page > teacherList.TotalPages) return;
+        currentPage = page;
+        await LoadTeachers();
+    }
+
+    private async Task LoadTeachers()
+    {
+        teacherList = await teacherService.GetAllTeachers(currentPage, pageSize);
+    }
+    private async Task DeleteTeacher(string UserId)
+    {
+        bool confirm = await JS.InvokeAsync<bool>("confirm", "Bạn có chắc muốn xóa không?");
+        if (!confirm) return;
+        else
+        {
+            var (flag, message) = await teacherService.DeleteTeacher(UserId);
+            if (flag)
+            {
+                await JS.InvokeVoidAsync("alert", message);
+                await LoadTeachers();
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("alert", message);
+                return;
+            }
+        }
+    }
+}
+

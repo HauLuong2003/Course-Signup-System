@@ -10,7 +10,7 @@ namespace Course_Signup_System.Application.DTO.Request
         [Required]
         public string Password { get; set; } = null!;
 
-        public bool ConfirmTeacher { get; set; } = false;
+        public bool ConfirmTeacher { get; set; }
 
     }
 }

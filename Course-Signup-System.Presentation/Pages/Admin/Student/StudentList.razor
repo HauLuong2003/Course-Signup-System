@@ -1,0 +1,148 @@
+﻿@page "/student-list"
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Student List</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <p><a class="btn btn-success float-end" href="/add-student"> Add New Student </a></p>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header"></div>
+                            @if (studentList != null || studentList.Data.Any() )
+                            {
+                                <div class="card-body">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th> Name</th>
+
+                                                <th>Avatar</th>
+                                                <th>Phone</th>
+                                                <th>Sex</th>
+                                                <th>Email</th>
+                                                <th>Phụ huynh</th>
+                                                <th>Create </th>
+                                                <th>Update</th>
+                                                <th>Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var st in studentList.Data)
+                                            {
+                                                <tr>
+                                                    <td>@st.UserId</td>
+                                                    <td>@(st.FirstName + " " + st.LastName)</td>
+                                                    <td>
+                                                        <img src="@st.Avatar" alt="avatar" style="max-width: 100px; max-height: 100px;" />
+                                                    </td>
+                                                    <td>@st.PhoneNumber</td>
+
+                                                    <td>@(char.ToUpper(st.Sex) == 'M' ? "Nam" : "Nữ")</td>
+
+                                                    <td>@st.Email</td>
+                                                    <td>@st.Parents</td>
+                                                    <td>@st.CreateAt</td>
+                                                    <td>@st.UpdateAt</td>
+                                                    <td>
+                                                        <a class="btn btn-success" href="/update-student/@st.UserId"> Update </a>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger" @onclick="()=>DeleteStudent(st.UserId)"> Delete </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-footer clearfix">
+
+                                    <ul class="pagination pagination-sm m-0 float-right" Spread="2">
+                                            <li class="page-item @(currentPage == 1 ? "disable" : "")">
+                                            <button class="page-link" @onclick="() => GoToPage(currentPage - 1)">&laquo;</button>
+                                            </li>
+                                        @if (studentList.TotalPages > 0){
+                                        @for (int i = 1; i <= studentList.TotalPages; i++)
+                                            {
+                                                var pageIndex = i; // biến tạm để giữ giá trị đúng
+                                                <li class="page-item @(pageIndex  == currentPage ? "active" : "")">
+                                                    <button class="page-link" @onclick="() => GoToPage(pageIndex )">@i</button>
+
+                                            </li>
+                                            }
+                                        }
+                                            <li class="page-item @(currentPage == studentList.TotalPages ? "disable":"")">
+                                            <button class="page-link" @onclick="() => GoToPage(currentPage + 1)">&raquo;</button>
+                                            </li>
+                                        </ul>
+                                    
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">There are no  available.</div>
+
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    public PageResult<StudentDTO> studentList { set; get; } = new();
+    public int currentPage = 1;
+    public int pageSize = 10;
+
+    protected override async Task OnInitializedAsync()
+    {      
+        await Loadstudents();
+    }
+    private async Task GoToPage(int page)
+    {
+        if (page < 1 || page > studentList.TotalPages) return;
+        currentPage = page;
+        await Loadstudents();
+    }
+
+    private async Task Loadstudents()
+    {
+        // var uri = new Uri(Navigation.Uri);
+        // var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+        // if (int.TryParse(query.Get("page"), out int page))
+        //     currentPage = page;
+        
+        // else      
+        //     currentPage = 1;
+        studentList = await studentSerive.GetAllStudents(currentPage, pageSize);
+    }
+    private async Task DeleteStudent(string UserId)
+    {
+        bool confirm = await JS.InvokeAsync<bool>("confirm", "Bạn có chắc muốn xóa không?");
+        if (!confirm) return;
+        else
+        {
+            var (flag, message) = await studentSerive.DeleteStudent(UserId);
+            if (flag)
+            {
+                await JS.InvokeVoidAsync("alert", message);
+                await Loadstudents();
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("alert", message);
+                return;
+            }
+        }
+    }
+}
+

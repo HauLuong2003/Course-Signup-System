@@ -55,6 +55,7 @@ namespace Course_Signup_System.Infrastructure.Repositories
             {
                 //new Claim(ClaimTypes.Role, role!.Role.RoleName),
                 new Claim(ClaimTypes.NameIdentifier,user.UserId),
+                new Claim(ClaimTypes.Name, user.FirstName+ " "+user.LastName),
                 new Claim("RoleId", user.RoleId.ToString()),
             };            
             foreach(var permissions in rolePermission)

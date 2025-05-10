@@ -10,7 +10,6 @@ namespace Course_Signup_System.Domain.Entities
         public string? Parents { get; set; } = null!;
 
         public DateTime BirthDay { get; set; }
-
         
         public char Sex { get; set; }
 

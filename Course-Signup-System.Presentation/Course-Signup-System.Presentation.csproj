@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,8 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.29" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.29" PrivateAssets="all" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.34.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Shared\User\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Course-Signup-System.Application\Course-Signup-System.Application.csproj" />
   </ItemGroup>
 
 </Project>

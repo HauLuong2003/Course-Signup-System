@@ -9,7 +9,7 @@ namespace Course_Signup_System.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "PermissionAuthorize")]
+    //[Authorize(Policy = "PermissionAuthorize")]
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;

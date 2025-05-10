@@ -1,0 +1,183 @@
+﻿@page "/update-student/{UserId}"
+<!-- Main content -->
+<section class="content">
+    <EditForm Model="Student" OnValidSubmit="HandleUpdateStudent">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Update Student</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="inputName"> Họ</label>
+                            <InputText @bind-Value="Student.FirstName" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDescription">Tên</label>
+                            <InputText @bind-Value="Student.LastName" class="form-control" rows="4"></InputText>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Email">Email</label>
+                            <InputText type="email" @bind-Value="Student.Email" class="form-control" />
+                        </div>
+                        @* <div class="form-group">
+                            <label for="Quantity">Mật khẩu</label>
+                            <InputText type="password" @bind-Value="Student.Password" class="form-control" />
+                        </div> *@
+                        <div class="form-group">
+                            <label for="Brand">Vai Trò</label>
+
+                            @if (roleList != null)
+                            {
+                                <InputSelect for="role" @bind-Value="Student.RoleId" class="form-control custom-select">
+                                    <option value="">Chọn</option>
+                                    @foreach (var role in roleList)
+                                    {
+                                        <option value="@role.RoleId">@role.RoleName</option>
+                                    }
+                                </InputSelect>
+                            }
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form label @(ImageUploadMessage == ""?"":"Text-danger")">
+                                @(ImageUploadMessage == "" ? "Avatar" : ImageUploadMessage)
+                            </label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <InputFile type="file" class="custom-file-input" OnChange="Avatar" id="image" />
+                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <div class="col-md-6">
+                <div class="card card-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title"></h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="inputSex">Giới tính</label>
+                            <InputSelect for="Featured" @bind-Value="Student.Sex" class="form-control custom-select">
+                                <option value="M">Nam</option>
+                                <option value="F">Nữ</option>
+                            </InputSelect>
+                        </div>
+                        <div class="form-group">
+                            <label for="Address">Địa chỉ</label>
+                            <InputTextArea type="password" @bind-Value="Student.Address" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="BirthDay">Ngày sinh</label>
+                            <InputDate @bind-Value="Student.BirthDay" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Phone">Phone</label>
+                            <InputText @bind-Value="Student.PhoneNumber" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Phone">Phụ huynh</label>
+                            <InputText @bind-Value="Student.Parents" class="form-control" />
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                <input type="submit" value="Update Student" class="btn btn-success float-right">
+
+                <a href="/student-list" class="btn btn-secondary">Cancel</a>
+
+            </div>
+        </div>
+    </EditForm>
+</section>
+@code {
+    private StudentDTO Student { set; get; } = new();
+    private List<RoleDTO> roleList = new List<RoleDTO>();
+    string ImageUploadMessage = "";
+    [Parameter]
+    public string UserId { get; set; } 
+    public IBrowserFile? file1;
+    public async Task Avatar(InputFileChangeEventArgs e)
+    {
+        file1 = e.File;
+        if (file1 != null)
+        {
+            ImageUploadMessage = "Image uploaded successfully";
+        }
+        else
+        {
+            ImageUploadMessage = "No file selected";
+        }
+    }
+    public async Task<string> SaveImageAvatar()
+    {
+        if (file1 != null)
+        {
+            using var stream = file1.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            var fileBytes = memoryStream.ToArray();
+            var response = await FileStorage.UploadFile(fileBytes, file1.Name, file1.ContentType);
+
+            return response;
+        }
+        return null!;
+    }
+    private async Task HandleUpdateStudent()
+    {
+        Student.Avatar = await SaveImageAvatar();
+        Student.UserId = UserId;
+        var (flag, message) = await studentSerive.UpdateStudent(Student);
+        if (flag)
+        {
+            await JS.InvokeVoidAsync("alert", message);
+            Navigation.NavigateTo("/student-list");
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("alert", message);
+            return;
+        }
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        Student.BirthDay = DateTime.Now;
+        roleList = await RoleService.GetRoles();
+        Student = await studentSerive.GetStudentById(UserId);
+    }
+
+}

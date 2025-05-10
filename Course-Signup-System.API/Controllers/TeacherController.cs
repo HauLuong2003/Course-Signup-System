@@ -10,7 +10,7 @@ namespace Course_Signup_System.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TeacherController : ControllerBase
     {
         private readonly ITeacherService _teacherService;
@@ -19,33 +19,32 @@ namespace Course_Signup_System.API.Controllers
         {
             _teacherService = teacherService;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetTeachers([FromQuery] int page = 1 ,int pagesize = 10)
+        [HttpGet("GetTeacher")]
+        public async Task<IActionResult> GetTeachers([FromQuery] int page ,int pagesize)
         //page: Số trang bạn muốn lấy (bắt đầu từ 1).
         //pageSize: Số lượng bản ghi trên mỗi trang.
         {
-            try
-            {
-                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
-                if (userPermissions is null)
-                {
-                    return Forbid();
-                }
-                else if (userPermissions.Contains("Xem tất cả danh sách giảng viên"))
-                {
+            //try
+            //{
+            //    var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+            //    if (userPermissions is null)
+            //    {
+            //        return Forbid();
+            //    }
+            //    else if (userPermissions.Contains("Xem tất cả danh sách giảng viên"))
+            //    {
                     var teachers = await _teacherService.GetAllTeachers(page, pagesize);
-
                     return Ok(teachers);
-                }
-                else
-                {
-                    return Forbid("khong co quyen");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            //    }
+            //    else
+            //    {
+            //        return Forbid("khong co quyen");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex);
+            //}
         }
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetTeacher(string Id)
@@ -76,27 +75,27 @@ namespace Course_Signup_System.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTeacher([FromBody]TeacherDTO teacherDTO)
         {
-            try
-            {
-                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
-                if (userPermissions is null)
-                {
-                    return Forbid();
-                }
-                else if (userPermissions.Contains("Thêm xóa sửa giảng viên"))
-                {
+            //try
+            //{
+            //    var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+            //    if (userPermissions is null)
+            //    {
+            //        return Forbid();
+            //    }
+            //    else if (userPermissions.Contains("Thêm xóa sửa giảng viên"))
+            //    {
                     var st = await _teacherService.CreateTeacher(teacherDTO);
                     return Ok(st);
-                }
-                else
-                {
-                    return Forbid("khong co quyen truy cap");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            //    }
+            //    else
+            //    {
+            //        return Forbid("khong co quyen truy cap");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex);
+            //}
         }
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteTeacher(string Id)
@@ -152,7 +151,7 @@ namespace Course_Signup_System.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("Get-teacher")]
+        [HttpGet("GetTeacherByEmail")]
         public async Task<IActionResult> GetTeacherByEmail(string Email)
         {
             try

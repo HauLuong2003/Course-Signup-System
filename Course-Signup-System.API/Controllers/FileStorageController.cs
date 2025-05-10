@@ -16,7 +16,7 @@ namespace Course_Signup_System.API.Controllers
             _fileStorageService = fileStorageService;   
             _studentService = studentService;
         }
-        [HttpPost]
+        [HttpPost("UploadFile")]
         public async Task<IActionResult> FileStorage(IFormFile file)
         {
             if (file == null ||  file.Length == 0)

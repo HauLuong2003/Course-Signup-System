@@ -17,9 +17,9 @@ namespace Course_Signup_System.API.Controllers
         {
             _subjectService = subjectService;
         }
-        [Authorize(Policy = "ReadTrainingManagement")]
+        //[Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet]
-        public async Task<IActionResult> GetSubject([FromQuery]int page =1, [FromQuery] int pagesize =10)
+        public async Task<IActionResult> GetSubject([FromQuery]int page, [FromQuery] int pagesize)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace Course_Signup_System.API.Controllers
             }
 
         }
-        [Authorize(Policy = "ReadTrainingManagement")]
+        //[Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetSubjectById(string Id)
         {
@@ -47,7 +47,7 @@ namespace Course_Signup_System.API.Controllers
             }
 
         }
-        [Authorize(Policy = "WriteTrainingManagement")]
+        //[Authorize(Policy = "WriteTrainingManagement")]
         [HttpPost]
         public async Task<IActionResult> CreateSubject(SubjectDTO subjectDTO)
         {
@@ -61,7 +61,7 @@ namespace Course_Signup_System.API.Controllers
                 return BadRequest(ex);
             }
         }
-        [Authorize(Policy = "WriteTrainingManagement")]
+        //[Authorize(Policy = "WriteTrainingManagement")]
         [HttpDelete("{Id}")]
         public async Task<IActionResult> DeleteSubject(string Id)
         {
@@ -75,7 +75,7 @@ namespace Course_Signup_System.API.Controllers
                 return BadRequest(ex);
             }
         }
-        [Authorize(Policy = "WriteTrainingManagement")]
+        //[Authorize(Policy = "WriteTrainingManagement")]
         [HttpPut("{Id}")]
         public async Task<IActionResult> UpdateSubject(string Id,SubjectDTO subjectDTO)
         {
@@ -93,7 +93,7 @@ namespace Course_Signup_System.API.Controllers
                 return BadRequest(ex);
             }
         }
-        [Authorize(Policy = "ReadTrainingManagement")]
+        //[Authorize(Policy = "ReadTrainingManagement")]
         [HttpGet("{name}")]
         public async Task<IActionResult> GetSubjectByName(string name)
         {

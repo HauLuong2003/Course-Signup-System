@@ -1,0 +1,64 @@
+﻿@page "/login"
+
+<div class="card">
+    <div class="card-body login-card-body">
+        <p class="login-box-msg">Vui lòng đăng nhập tài khoản</p>
+        <EditForm Model="@loginModel" OnValidSubmit="HandleLogin" >
+            <div class="input-group mb-3">
+                <InputText @bind-Value="loginModel.Username" type="email" class="form-control" placeholder="Email"> </InputText>
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-envelope"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <InputText @bind-Value="loginModel.Password" type="password" class="form-control" placeholder="Password"></InputText>
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="icheck-primary">
+                        <InputCheckbox @bind-Value="loginModel.ConfirmTeacher" id="teacher"></InputCheckbox>
+                        <label for="teacher">
+                            Giáo viên
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </EditForm>
+
+        <!-- /.social-auth-links -->
+
+        <p class="mb-1">
+            <a href="forgot-password.html">Quên mật khẩu</a>
+        </p>
+        <p class="mb-0">
+            <a href="register.html" class="text-center">Đăng ký</a>
+        </p>
+    </div>
+    <!-- /.login-card-body -->
+</div>
+@code {
+    private Login loginModel = new();
+
+    private async Task HandleLogin()
+    {
+        var result = await AuthService.Login(loginModel);   
+        if (!string.IsNullOrWhiteSpace(result))
+        {
+            // Token hợp lệ => đăng nhập thành công
+            Navigation.NavigateTo("/"); // Hoặc trang nào bạn muốn sau khi login
+        }
+      
+    }
+}

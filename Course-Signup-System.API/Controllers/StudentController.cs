@@ -10,7 +10,7 @@ namespace Course_Signup_System.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
@@ -19,136 +19,136 @@ namespace Course_Signup_System.API.Controllers
         {
             _studentService = studentService;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetStudents([FromQuery] int page = 1, [FromQuery] int pagesize =10)
+        [HttpGet("GetStudent")]
+        public async Task<IActionResult> GetStudents([FromQuery] int page, [FromQuery] int pagesize )
         {
             try
             {
-                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
-                if (userPermissions is null)
-                {
-                    return Forbid();
-                }
-                else if (userPermissions.Contains("Xem tất cả danh sách học viên"))
-                {
+                //var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+                //if (userPermissions is null)
+                //{
+                //    return Forbid();
+                //}
+                //else if (userPermissions.Contains("Xem tất cả danh sách học viên"))
+                //{
                     var students = await _studentService.GetAllStudents(page, pagesize);
                     return Ok(students);
-                }
-                else
-                {
-                    return Forbid("khong co quyen truy cap");
-                }
+                //}
+                //else
+                //{
+                //    return Forbid("khong co quyen truy cap");
+                //}
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("{Id}")]
+        [HttpGet("Get-Student/{Id}")]
         public async Task<IActionResult> GetStudents(string Id)
         {
-            try
-            {
-                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
-                if (userPermissions is null)
-                {
-                    return Forbid();
-                }
-                else if (userPermissions.Contains("Xem tất cả danh sách học viên"))
-                {
+            //try
+            //{
+            //    var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+            //    if (userPermissions is null)
+            //    {
+            //        return Forbid();
+            //    }
+            //    else if (userPermissions.Contains("Xem tất cả danh sách học viên"))
+            //    {
                     var student = await _studentService.GetStudentById(Id);
                     return Ok(student);
-                }
-                else
-                {
-                    return Forbid("khong co quyen truy cap");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            //    }
+            //    else
+            //    {
+            //        return Forbid("khong co quyen truy cap");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
         }
-        [HttpPost]
+        [HttpPost("Add-Student")]
         public async Task<IActionResult> CreateStudent(StudentDTO studentDTO)
         {
-            try
-            {
-                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
-                if (userPermissions is null)
-                {
-                    return Forbid();
-                }
-                else if (userPermissions.Contains("Thêm xóa sửa học viên"))
-                {
+            //try
+            //{
+            //    var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+            //    if (userPermissions is null)
+            //    {
+            //        return Forbid();
+            //    }
+            //    else if (userPermissions.Contains("Thêm xóa sửa học viên"))
+            //    {
                     var st = await _studentService.CreateStudent(studentDTO);
                     return Ok(st);
-                }
-                else
-                {
-                    return Forbid("khong co quyen truy cap");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            //    }
+            //    else
+            //    {
+            //        return Forbid("khong co quyen truy cap");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
         }
-        [HttpDelete("{Id}")]
+        [HttpDelete("Delete-Student/{Id}")]
         public async Task<IActionResult> DeleteStudent(string Id)
         {
-            try
-            {
-                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
-                if (userPermissions is null)
-                {
-                    return Forbid();
-                }
-                else if (userPermissions.Contains("Thêm xóa sửa học viên"))
-                {
+            //try
+            //{
+            //    var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+            //    if (userPermissions is null)
+            //    {
+            //        return Forbid();
+            //    }
+            //    else if (userPermissions.Contains("Thêm xóa sửa học viên"))
+            //    {
                     var student = await _studentService.DeleteStudent(Id);
                     return Ok(student);
-                }
-                else
-                {
-                    return Forbid("khong co quyen truy cap");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            //    }
+            //    else
+            //    {
+            //        return Forbid("khong co quyen truy cap");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex);
+            //}
         }
-        [HttpPut("{Id}")]
-        public async Task<IActionResult> UpdateStudent(string Id,StudentDTO studentDTO)
+        [HttpPut("Update-Student/{Id}")]
+        public async Task<IActionResult> UpdateStudent(StudentDTO studentDTO)
         {
-            if(Id != studentDTO.UserId)
-            {
-                return BadRequest();
-            }
-            try
-            {
-                var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
-                if (userPermissions is null)
-                {
-                    return Forbid();
-                }
-                else if (userPermissions.Contains("Thêm xóa sửa học viên"))
-                {
+            //if(Id != studentDTO.UserId)
+            //{
+            //    return BadRequest();
+            //}
+            //try
+            //{
+            //    var userPermissions = User.FindAll("Permission").Select(c => c.Value).ToList();
+            //    if (userPermissions is null)
+            //    {
+            //        return Forbid();
+            //    }
+            //    else if (userPermissions.Contains("Thêm xóa sửa học viên"))
+            //    {
                     var student = await _studentService.UpdateStudent(studentDTO);
                     return Ok(student);
-                }
-                else
-                {
-                    return Forbid("Khong co quyen truy cap");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            //    }
+            //    else
+            //    {
+            //        return Forbid("Khong co quyen truy cap");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex);
+            //}
         }
-        [HttpGet("Get-Student")]
+        [HttpGet("GetStudentByEmail")]
         public async Task<IActionResult> GetStudentByEmail(string email)
         {
             try
@@ -172,6 +172,12 @@ namespace Course_Signup_System.API.Controllers
             {
                 return BadRequest(ex);
             }
+        }
+        [HttpGet("SearchStudent")]
+        public async Task<IActionResult>GetStudentByName(string name)
+        {
+            var studentname = await _studentService.SearchStudent(name);
+            return Ok(studentname);
         }
         [HttpGet("{Id}/schedules")]
         public async Task<IActionResult> GetScheduleByStudent(string Id)

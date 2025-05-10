@@ -57,7 +57,7 @@ namespace Course_Signup_System.Infrastructure.Repositories
             }
             else
             {
-                var student = await _dbcontext.Users.FindAsync(login.Username);
+                var student = await _dbcontext.Users.FirstOrDefaultAsync(l=>l.Email == login.Username);
                 if(student is null) return  "code incorrect";
                 else
                 {

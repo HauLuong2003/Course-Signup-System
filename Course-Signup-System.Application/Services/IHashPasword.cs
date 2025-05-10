@@ -4,5 +4,6 @@
     {
         void CreateHashPassword(string password, out string HashPassword, out string PasswordSalt);
         bool VerifyHashPassword(string Password,  string HashPassword, string PasswordSalt);
+
     }
 }

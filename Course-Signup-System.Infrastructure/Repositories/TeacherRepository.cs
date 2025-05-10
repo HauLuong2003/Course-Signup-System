@@ -21,7 +21,7 @@ namespace Course_Signup_System.Infrastructure.Repositories
             _hashPasword = hashPasword;
         }
 
-        public async Task<TeacherDTO> CreateTeacher(TeacherDTO teacherdto)
+        public async Task<ServiceResponse> CreateTeacher(TeacherDTO teacherdto)
         {
             _hashPasword.CreateHashPassword(teacherdto.Password, out string HashPassword, out string PasswordSalt);
             var teacher = _mapper.Map<Teacher>(teacherdto);
@@ -31,7 +31,7 @@ namespace Course_Signup_System.Infrastructure.Repositories
             teacher.UpdateAt = DateTime.Now;
             await  _courseSystemDB.Teachers.AddAsync(teacher);
             await _courseSystemDB.SaveChangesAsync();
-            return _mapper.Map<TeacherDTO>(teacher);
+            return new ServiceResponse(true,"Create success");
         }
 
         public async Task<ServiceResponse> DeleteTeacher(string Id)
@@ -82,14 +82,14 @@ namespace Course_Signup_System.Infrastructure.Repositories
             return _mapper.Map<TeacherDTO>(teacher);
         }
 
-        public  async Task<List<TeacherDTO>> GetTeacherByEmail(string Email)
+        public  async Task<TeacherDTO> GetTeacherByEmail(string Email)
         {
-            var teacher = await _courseSystemDB.Teachers.Where(r => r.Email == Email).ToListAsync();
+            var teacher = await _courseSystemDB.Teachers.Where(r => r.Email == Email).FirstOrDefaultAsync();
             if (teacher is null)
             {
                 throw new ArgumentNullException("stdent is null");
             }
-            return _mapper.Map<List<TeacherDTO>>(teacher);
+            return _mapper.Map<TeacherDTO>(teacher);
         }
 
         public async Task<ServiceResponse> UpdateTeacher(TeacherDTO teacherdto)

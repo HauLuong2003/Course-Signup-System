@@ -21,28 +21,29 @@ namespace Course_Signup_System.Infrastructure.Repositories
             _mapper = mapper;
             _hashPasword = hashPasword;
         }
-        public async Task<StudentDTO> CreateStudent(StudentDTO student)
+        public async Task<ServiceResponse> CreateStudent(StudentDTO student)
         {
            _hashPasword.CreateHashPassword(student.Password, out string HashPassword, out string PasswordSalt);
             var code = await _generateService.GenerateCodeAsync();
             var students = _mapper.Map<Student>(student);
             students.UserId = code;
             students.CreateAt = DateTime.Now;
+            students.UpdateAt = DateTime.Now;
             students.PasswordHash = HashPassword;
             students.PasswordSalt = PasswordSalt;
             await _courseSystemDB.Students.AddAsync(students);
             await _courseSystemDB.SaveChangesAsync();
-            return _mapper.Map<StudentDTO>(students);
+            return new ServiceResponse(true,"Create success");
         }
 
         public async Task<ServiceResponse> DeleteStudent(string Id)
         {
-            var student = await _courseSystemDB.Users.FindAsync(Id);
+            var student = await _courseSystemDB.Students.FindAsync(Id);
             if (student is null)
             {
                 return new ServiceResponse(false, "student is null");
             }
-            _courseSystemDB.Users.Remove(student);
+            _courseSystemDB.Students.Remove(student);
             await _courseSystemDB.SaveChangesAsync();
             return new ServiceResponse(true, "Delete success");
         }
@@ -118,7 +119,7 @@ namespace Course_Signup_System.Infrastructure.Repositories
             return _mapper.Map<List<StudentDTO>>(students);
         }
 
-        public async Task<List<TeachSchedule>> GetScheduleClass(string StudentId)
+        public async Task<List<TeacherScheduleDTO>> GetScheduleClass(string StudentId)
         {
             var schedule = await _courseSystemDB.StudentClasses.Where(st => st.UserId == StudentId && st.Status)
                                                                 .SelectMany(sc => sc.Class.TeachSchedules)
@@ -137,7 +138,7 @@ namespace Course_Signup_System.Infrastructure.Repositories
             {
                 throw new Exception("schedule is null");
             }
-            return schedule;
+            return _mapper.Map<List<TeacherScheduleDTO>>(schedule);
         }
     }
 }
